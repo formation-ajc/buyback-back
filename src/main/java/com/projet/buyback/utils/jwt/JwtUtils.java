@@ -1,9 +1,9 @@
-package com.projet.buyback.utils;
+package com.projet.buyback.utils.jwt;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
-import com.projet.buyback.service.UserDetailsImpl;
+import com.projet.buyback.service.jwt.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import org.slf4j.Logger;

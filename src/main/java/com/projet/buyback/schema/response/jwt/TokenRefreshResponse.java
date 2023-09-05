@@ -1,4 +1,4 @@
-package com.projet.buyback.jwtresponse;
+package com.projet.buyback.schema.response.jwt;
 
 public class TokenRefreshResponse {
     private String accessToken;

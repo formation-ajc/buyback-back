@@ -1,8 +1,8 @@
-package com.projet.buyback.utils;
+package com.projet.buyback.utils.jwt;
 
 import java.io.IOException;
 
-import com.projet.buyback.service.UserDetailsServiceImpl;
+import com.projet.buyback.service.jwt.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

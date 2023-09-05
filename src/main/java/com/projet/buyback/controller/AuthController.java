@@ -6,25 +6,26 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.projet.buyback.exception.TokenRefreshException;
-import com.projet.buyback.jwtrequest.LoginRequest;
-import com.projet.buyback.jwtrequest.RefreshTokenRequest;
-import com.projet.buyback.jwtrequest.SignupRequest;
-import com.projet.buyback.jwtresponse.MessageResponse;
-import com.projet.buyback.jwtresponse.SignupResponse;
-import com.projet.buyback.jwtresponse.TokenRefreshResponse;
+import com.projet.buyback.schema.request.jwt.LoginRequest;
+import com.projet.buyback.schema.request.jwt.RefreshTokenRequest;
+import com.projet.buyback.schema.request.jwt.SignupRequest;
+import com.projet.buyback.schema.response.jwt.MessageResponse;
+import com.projet.buyback.schema.response.jwt.SignupResponse;
+import com.projet.buyback.schema.response.jwt.TokenRefreshResponse;
 import com.projet.buyback.model.ERole;
 import com.projet.buyback.model.RefreshToken;
 import com.projet.buyback.model.Role;
 import com.projet.buyback.model.User;
 import com.projet.buyback.repository.RoleRepository;
 import com.projet.buyback.repository.UserRepository;
-import com.projet.buyback.service.RefreshTokenService;
-import com.projet.buyback.service.UserDetailsImpl;
-import com.projet.buyback.utils.JwtUtils;
+import com.projet.buyback.service.jwt.RefreshTokenService;
+import com.projet.buyback.service.jwt.UserDetailsImpl;
+import com.projet.buyback.utils.jwt.JwtUtils;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -75,9 +76,9 @@ public class AuthController {
         List<String> roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId().longValue());
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
 
-        return ResponseEntity.ok(new SignupResponse(jwt, refreshToken.getToken(), userDetails.getId().longValue(),
+        return ResponseEntity.ok(new SignupResponse(jwt, refreshToken.getToken(), userDetails.getId(),
                 userDetails.getUsername(), userDetails.getEmail(), roles));
     }
 
@@ -110,6 +111,12 @@ public class AuthController {
                         roles.add(adminRole);
 
                         break;
+                    case "super":
+                        Role superRole = roleRepository.findByName(ERole.SUPER)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(superRole);
+
+                        break;
 
                     default:
                         Role userRole = roleRepository.findByName(ERole.USER)
@@ -126,6 +133,7 @@ public class AuthController {
     }
 
     @PostMapping("/refreshtoken")
+    @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN') or hasAuthority('SUPER')")
     public ResponseEntity<?> refreshtoken(@Valid @RequestBody RefreshTokenRequest request) {
         String requestRefreshToken = request.getRefreshToken();
 

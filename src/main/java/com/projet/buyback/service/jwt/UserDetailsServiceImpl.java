@@ -1,4 +1,4 @@
-package com.projet.buyback.service;
+package com.projet.buyback.service.jwt;
 
 import com.projet.buyback.model.User;
 import com.projet.buyback.repository.UserRepository;

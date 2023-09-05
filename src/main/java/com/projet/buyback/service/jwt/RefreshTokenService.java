@@ -1,4 +1,4 @@
-package com.projet.buyback.service;
+package com.projet.buyback.service.jwt;
 
 import java.time.Instant;
 import java.util.Optional;
@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import com.projet.buyback.exception.TokenRefreshException;
 import com.projet.buyback.model.RefreshToken;
-import com.projet.buyback.model.User;
 import com.projet.buyback.repository.RefreshTokenRepository;
 import com.projet.buyback.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +30,15 @@ public class RefreshTokenService {
 
     public RefreshToken createRefreshToken(Long userId) {
         RefreshToken refreshToken = new RefreshToken();
+
         if(refreshTokenRepository.findByUserId(userId).isPresent()) {
             refreshToken = refreshTokenRepository.findByUserId(userId).get();
         }
 
-        refreshToken.setUser(userRepository.findById(userId).get());
+        if(userRepository.findById(userId).isPresent()) {
+            refreshToken.setUser(userRepository.findById(userId).get());
+        }
+
         refreshToken.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
         refreshToken.setToken(UUID.randomUUID().toString());
 
@@ -48,12 +51,14 @@ public class RefreshTokenService {
             refreshTokenRepository.delete(token);
             throw new TokenRefreshException(token.getToken(), "Refresh token was expired. Please make a new signin request");
         }
-
         return token;
     }
 
     @Transactional
     public int deleteByUserId(Long userId) {
-        return refreshTokenRepository.deleteByUser(userRepository.findById(userId).get());
+        if(userRepository.findById(userId).isPresent()) {
+            return refreshTokenRepository.deleteByUser(userRepository.findById(userId).get());
+        }
+        return -1;
     }
 }

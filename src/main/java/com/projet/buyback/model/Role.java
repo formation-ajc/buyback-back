@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false, nullable = false, unique = true)
     private Long id;
 
     @Enumerated(EnumType.STRING)

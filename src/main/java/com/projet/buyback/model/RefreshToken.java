@@ -5,8 +5,10 @@ import jakarta.persistence.*;
 
 @Entity(name = "refreshtoken")
 public class RefreshToken {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false, nullable = false, unique = true)
     private long id;
 
     @OneToOne

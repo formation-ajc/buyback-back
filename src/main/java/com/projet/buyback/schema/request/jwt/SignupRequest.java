@@ -1,4 +1,4 @@
-package com.projet.buyback.jwtrequest;
+package com.projet.buyback.schema.request.jwt;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

@@ -1,7 +1,7 @@
 package com.projet.buyback.config;
 
-import com.projet.buyback.service.UserDetailsServiceImpl;
-import com.projet.buyback.utils.AuthenticationTokenFilter;
+import com.projet.buyback.service.jwt.UserDetailsServiceImpl;
+import com.projet.buyback.utils.jwt.AuthenticationTokenFilter;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
