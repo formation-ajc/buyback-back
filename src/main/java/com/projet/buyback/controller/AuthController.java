@@ -90,7 +90,7 @@ public class AuthController {
         catch(Exception e) {// see note 2
                 return ResponseEntity
                     .status(HttpStatus.FORBIDDEN)
-                    .body("User not exist");
+                    .body(new MessageResponse("Error: User not exist!"));
             }
     }
 
@@ -99,6 +99,10 @@ public class AuthController {
 
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
+        }
+
+        if (!signUpRequest.getPassword().equals(signUpRequest.getConfirmPassword())) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Passwords must be the same!"));
         }
 
         User user = new User(signUpRequest.getFirstname(), signUpRequest.getLastname(), signUpRequest.getEmail(), encoder.encode(signUpRequest.getPassword()));
