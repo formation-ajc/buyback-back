@@ -26,14 +26,14 @@ public class JwtUtils {
     private int jwtExpirationMs;
 
     public String generateJwtToken(UserDetailsImpl userPrincipal) {
-        return generateTokenFromUsername(userPrincipal.getUsername());
+        return generateTokenFromEmail(userPrincipal.getEmail());
     }
 
-    public String generateTokenFromUsername(String username) {
+    public String generateTokenFromEmail(String email) {
 
         SecretKeySpec secret_key = new SecretKeySpec(jwtSecret.getBytes(StandardCharsets.UTF_8), "HmacSHA512");
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(email)
                 .setIssuedAt(new Date())
 //                .claim("name", "Micah Silverman")
 //                .claim("scope", "admins")
@@ -43,7 +43,7 @@ public class JwtUtils {
                 .compact();
     }
 
-    public String getUserNameFromJwtToken(String token) {
+    public String getEmailFromJwtToken(String token) {
         SecretKeySpec secret_key = new SecretKeySpec(jwtSecret.getBytes(StandardCharsets.UTF_8), "HmacSHA512");
 
         return Jwts.parserBuilder().setSigningKey(secret_key).build().parseClaimsJws(token).getBody().getSubject();

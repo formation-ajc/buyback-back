@@ -7,15 +7,13 @@ public class SignupResponse {
     private String type = "Bearer";
     private String refreshToken;
     private Long id;
-    private String username;
     private String email;
-    private List<String> roles;
+    private final List<String> roles;
 
-    public SignupResponse(String accessToken, String refreshToken, Long id, String username, String email, List roles) {
+    public SignupResponse(String accessToken, String refreshToken, Long id, String email, List<String> roles) {
         this.token = accessToken;
         this.refreshToken = refreshToken;
         this.id = id;
-        this.username = username;
         this.email = email;
         this.roles = roles;
     }
@@ -50,14 +48,6 @@ public class SignupResponse {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public List<String> getRoles() {

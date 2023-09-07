@@ -8,21 +8,24 @@ import com.projet.buyback.exception.TokenRefreshException;
 import com.projet.buyback.model.RefreshToken;
 import com.projet.buyback.repository.RefreshTokenRepository;
 import com.projet.buyback.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class RefreshTokenService {
+
     @Value("${jwt.refreshTokenDurationMs}")
     private Long refreshTokenDurationMs;
 
-    @Autowired
-    private RefreshTokenRepository refreshTokenRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public RefreshTokenService(RefreshTokenRepository refreshTokenRepository, UserRepository userRepository) {
+        this.refreshTokenRepository = refreshTokenRepository;
+        this.userRepository = userRepository;
+    }
 
     public Optional<RefreshToken> findByToken(String token) {
         return refreshTokenRepository.findByToken(token);

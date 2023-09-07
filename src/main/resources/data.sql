@@ -1,3 +1,3 @@
-INSERT INTO role (name) VALUES ('SUPER');
-INSERT INTO role (name) VALUES ('ADMIN');
-INSERT INTO role (name) VALUES ('USER');
+INSERT IGNORE INTO role (name) VALUES ('SUPER');
+INSERT IGNORE INTO role (name) VALUES ('ADMIN');
+INSERT IGNORE INTO role (name) VALUES ('USER');

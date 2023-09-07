@@ -9,7 +9,7 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,9 +26,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableMethodSecurity
-public class SecurityConfiguration {
-    @Autowired
+public class SecurityConfig {
+    final
     UserDetailsServiceImpl userDetailsService;
+
+    @Value("${api.baseURL}")
+    private String baseURL;
+
+    public SecurityConfig(UserDetailsServiceImpl userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     @Bean
     public AuthenticationTokenFilter authenticationJwtTokenFilter() {
@@ -43,11 +50,16 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/login", "/register").permitAll()
-                    .anyRequest().authenticated()
-                )
-                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(baseURL + "/login", baseURL + "/register", baseURL + "/refresh-token").permitAll()
+                .requestMatchers(baseURL +"/**").hasAnyAuthority("SUPER")
+                .anyRequest().authenticated()
+            )
+
+//            .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
+
+
+            .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
@@ -76,10 +88,10 @@ public class SecurityConfiguration {
                         addList("Bearer Authentication"))
                 .components(new Components().addSecuritySchemes
                         ("Bearer Authentication", createAPIKeyScheme()))
-                .info(new Info().title("My REST API")
+                .info(new Info().title("BUYBACK API")
                         .description("Some custom description of API.")
-                        .version("1.0").contact(new Contact().name("Sallo Szrajbman")
-                                .email( "www.baeldung.com").url("salloszraj@gmail.com"))
+                        .version("1.0").contact(new Contact().name("Robin FOUTEL")
+                                .email( "robin.foutel@gmail.com").url("http://localhost:8080/swagger-ui/index.html"))
                         .license(new License().name("License of API")
                                 .url("API license URL")));
     }
