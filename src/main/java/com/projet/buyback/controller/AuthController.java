@@ -85,7 +85,13 @@ public class AuthController {
 
             RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
 
-            return ResponseEntity.ok(new SignupResponse(jwt, refreshToken.getToken(), userDetails.getId(), userDetails.getEmail(), roles));
+            User user = null;
+            if (userRepository.findById(userDetails.getId()).isPresent()) {
+                user = userRepository.findById(userDetails.getId()).get();
+            }
+
+            assert user != null;
+            return ResponseEntity.ok(new SignupResponse(jwt, refreshToken.getToken(), userDetails.getId(), userDetails.getEmail(), user.getFirstname(), user.getLastname(), roles));
         }
         catch(Exception e) {// see note 2
                 return ResponseEntity
