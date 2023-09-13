@@ -15,7 +15,6 @@ public class SportDtoResponse {
 	private Address address;
 	private SportCategory category;
 	private Long userId;
-	private String username;
 	private String email;
 
 	
@@ -24,7 +23,7 @@ public class SportDtoResponse {
 	}
 
 	public SportDtoResponse(Long id, String name, Double price, LocalDate startDate, LocalDate endDate, Address address,
-			SportCategory category, Long userId, String username, String email) {
+			SportCategory category, Long userId, String email) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -34,7 +33,6 @@ public class SportDtoResponse {
 		this.address = address;
 		this.category = category;
 		this.userId = userId;
-		this.username = username;
 		this.email = email;
 	}
 
@@ -103,13 +101,6 @@ public class SportDtoResponse {
 		this.userId = userId;
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
 
 	public String getEmail() {
 		return email;
@@ -123,7 +114,7 @@ public class SportDtoResponse {
 	public String toString() {
 		return "SportDtoResponse [id=" + id + ", name=" + name + ", price=" + price + ", startDate=" + startDate
 				+ ", endDate=" + endDate + ", address=" + address + ", category=" + category + ", userId=" + userId
-				+ ", username=" + username + ", email=" + email + "]";
+				+ ", email=" + email + "]";
 	}	
 	
 

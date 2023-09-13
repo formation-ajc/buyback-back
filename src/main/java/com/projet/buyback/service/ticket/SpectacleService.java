@@ -24,8 +24,7 @@ public class SpectacleService {
 		for (Spectacle spectacle : spectacleTickets) {
 			spectacleTicketsDto.add(new SpectacleDtoResponse(spectacle.getId(), spectacle.getName(),
 					spectacle.getPrice(), spectacle.getStartDate(), spectacle.getEndDate(), spectacle.getAddress(),
-					spectacle.getSpectacleCategory(), spectacle.getUser().getId(), spectacle.getUser().getEmail(),
-					spectacle.getUser().getEmail()));
+					spectacle.getSpectacleCategory(), spectacle.getUser().getId(), spectacle.getUser().getEmail()));
 		}
 		return spectacleTicketsDto;
 	}
@@ -43,7 +42,6 @@ public class SpectacleService {
 			spectacleDtoResponse.setAddress(spectacleTicket.getAddress());
 			spectacleDtoResponse.setCategory(spectacleTicket.getSpectacleCategory());
 			spectacleDtoResponse.setUserId(spectacleTicket.getUser().getId());
-			spectacleDtoResponse.setUsername(spectacleTicket.getUser().getEmail());
 			spectacleDtoResponse.setEmail(spectacleTicket.getUser().getEmail());
 		}
 		return spectacleDtoResponse;
@@ -60,7 +58,6 @@ public class SpectacleService {
 		spectacleDtoResponse.setAddress(savedSpectacle.getAddress());
 		spectacleDtoResponse.setCategory(savedSpectacle.getSpectacleCategory());
 		spectacleDtoResponse.setUserId(savedSpectacle.getUser().getId());
-		spectacleDtoResponse.setUsername(savedSpectacle.getUser().getEmail());
 		spectacleDtoResponse.setEmail(savedSpectacle.getUser().getEmail());
 		return spectacleDtoResponse;
 	}

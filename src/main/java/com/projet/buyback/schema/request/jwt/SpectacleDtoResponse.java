@@ -15,7 +15,6 @@ public class SpectacleDtoResponse {
 	private Address address;
 	private SpectacleCategory category;
 	private Long userId;
-	private String username;
 	private String email;
 
 	public SpectacleDtoResponse() {
@@ -23,7 +22,7 @@ public class SpectacleDtoResponse {
 	}
 
 	public SpectacleDtoResponse(Long id, String name, Double price, LocalDate startDate, LocalDate endDate,
-			Address address, SpectacleCategory category, Long userId, String username, String email) {
+			Address address, SpectacleCategory category, Long userId, String email) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -33,7 +32,6 @@ public class SpectacleDtoResponse {
 		this.address = address;
 		this.category = category;
 		this.userId = userId;
-		this.username = username;
 		this.email = email;
 	}
 
@@ -101,13 +99,6 @@ public class SpectacleDtoResponse {
 		this.userId = userId;
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
 
 	public String getEmail() {
 		return email;
@@ -121,7 +112,7 @@ public class SpectacleDtoResponse {
 	public String toString() {
 		return "SpectacleDtoResponse [id=" + id + ", name=" + name + ", price=" + price + ", startDate=" + startDate
 				+ ", endDate=" + endDate + ", address=" + address + ", category=" + category + ", userId=" + userId
-				+ ", username=" + username + ", email=" + email + "]";
+				+ ", email=" + email + "]";
 	}
 
 }

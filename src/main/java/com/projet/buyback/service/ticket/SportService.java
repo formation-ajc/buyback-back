@@ -22,8 +22,7 @@ public class SportService {
 		List<SportDtoResponse> sportTicketsDto = new ArrayList<>();
 		for (Sport sport : sportTickets) {
 			sportTicketsDto.add(new SportDtoResponse(sport.getId(),sport.getName(), sport.getPrice(), sport.getStartDate(),
-					sport.getEndDate(), sport.getAddress(), sport.getSportCategory(), sport.getUser().getId(),
-					sport.getUser().getEmail(), sport.getUser().getEmail()));
+					sport.getEndDate(), sport.getAddress(), sport.getSportCategory(), sport.getUser().getId(), sport.getUser().getEmail()));
 		}
 		return sportTicketsDto;
 	}
@@ -41,7 +40,6 @@ public class SportService {
 			sportDtoresponse.setAddress(sportTicket.getAddress());
 			sportDtoresponse.setCategory(sportTicket.getSportCategory());
 			sportDtoresponse.setUserId(sportTicket.getUser().getId());
-			sportDtoresponse.setUsername(sportTicket.getUser().getEmail());
 			sportDtoresponse.setEmail(sportTicket.getUser().getEmail());
 		}
 		return sportDtoresponse;
@@ -58,7 +56,6 @@ public class SportService {
 		sportDtoResponse.setAddress(savedSport.getAddress());
 		sportDtoResponse.setCategory(savedSport.getSportCategory());
 		sportDtoResponse.setUserId(savedSport.getUser().getId());
-		sportDtoResponse.setUsername(savedSport.getUser().getEmail());
 		sportDtoResponse.setEmail(savedSport.getUser().getEmail());
 		return sportDtoResponse; 
 	}
