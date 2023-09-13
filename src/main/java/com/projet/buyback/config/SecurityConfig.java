@@ -28,6 +28,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableWebSecurity
@@ -72,7 +73,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             //désactivation de la gestion des en-têtes CORS au sein de Spring Security
-            .cors(AbstractHttpConfigurer::disable)
+            .cors(request -> new CorsConfiguration().applyPermitDefaultValues())
 
             //désactivation du CSRF (Cross-Site Request Forgery)
             .csrf(AbstractHttpConfigurer::disable)
