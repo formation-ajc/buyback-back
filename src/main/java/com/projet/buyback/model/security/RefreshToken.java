@@ -1,6 +1,8 @@
-package com.projet.buyback.model;
+package com.projet.buyback.model.security;
 
 import java.time.Instant;
+
+import com.projet.buyback.model.User;
 import jakarta.persistence.*;
 
 @Entity(name = "refreshtoken")

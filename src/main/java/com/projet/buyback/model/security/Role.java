@@ -1,4 +1,4 @@
-package com.projet.buyback.model;
+package com.projet.buyback.model.security;
 
 import jakarta.persistence.*;
 

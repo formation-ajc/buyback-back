@@ -5,8 +5,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.projet.buyback.model.SportCategory;
-import com.projet.buyback.repository.SportCategoryRepository;
+import com.projet.buyback.model.sport.SportCategory;
+import com.projet.buyback.repository.sport.SportCategoryRepository;
 
 @Service
 public class SportCategoryService {

@@ -1,12 +1,12 @@
-package com.projet.buyback.service.jwt;
+package com.projet.buyback.service.security;
 
 import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
 import com.projet.buyback.exception.TokenRefreshException;
-import com.projet.buyback.model.RefreshToken;
-import com.projet.buyback.repository.RefreshTokenRepository;
+import com.projet.buyback.model.security.RefreshToken;
+import com.projet.buyback.repository.security.RefreshTokenRepository;
 import com.projet.buyback.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

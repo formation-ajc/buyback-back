@@ -7,8 +7,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.projet.buyback.model.Spectacle;
-import com.projet.buyback.repository.SpectacleRepository;
+import com.projet.buyback.model.spectacle.Spectacle;
+import com.projet.buyback.repository.spectacle.SpectacleRepository;
 import com.projet.buyback.schema.request.jwt.SpectacleDtoResponse;
 
 @Service
@@ -24,7 +24,7 @@ public class SpectacleService {
 		for (Spectacle spectacle : spectacleTickets) {
 			spectacleTicketsDto.add(new SpectacleDtoResponse(spectacle.getId(), spectacle.getName(),
 					spectacle.getPrice(), spectacle.getStartDate(), spectacle.getEndDate(), spectacle.getAddress(),
-					spectacle.getSpectacleCategory(), spectacle.getUser().getId(), spectacle.getUser().getUsername(),
+					spectacle.getSpectacleCategory(), spectacle.getUser().getId(), spectacle.getUser().getEmail(),
 					spectacle.getUser().getEmail()));
 		}
 		return spectacleTicketsDto;
@@ -43,7 +43,7 @@ public class SpectacleService {
 			spectacleDtoResponse.setAddress(spectacleTicket.getAddress());
 			spectacleDtoResponse.setCategory(spectacleTicket.getSpectacleCategory());
 			spectacleDtoResponse.setUserId(spectacleTicket.getUser().getId());
-			spectacleDtoResponse.setUsername(spectacleTicket.getUser().getUsername());
+			spectacleDtoResponse.setUsername(spectacleTicket.getUser().getEmail());
 			spectacleDtoResponse.setEmail(spectacleTicket.getUser().getEmail());
 		}
 		return spectacleDtoResponse;
@@ -60,7 +60,7 @@ public class SpectacleService {
 		spectacleDtoResponse.setAddress(savedSpectacle.getAddress());
 		spectacleDtoResponse.setCategory(savedSpectacle.getSpectacleCategory());
 		spectacleDtoResponse.setUserId(savedSpectacle.getUser().getId());
-		spectacleDtoResponse.setUsername(savedSpectacle.getUser().getUsername());
+		spectacleDtoResponse.setUsername(savedSpectacle.getUser().getEmail());
 		spectacleDtoResponse.setEmail(savedSpectacle.getUser().getEmail());
 		return spectacleDtoResponse;
 	}

@@ -1,4 +1,4 @@
-package com.projet.buyback.service.jwt;
+package com.projet.buyback.service.security;
 
 import java.io.Serial;
 import java.util.Collection;

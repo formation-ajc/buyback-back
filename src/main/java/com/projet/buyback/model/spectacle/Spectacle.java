@@ -1,7 +1,9 @@
-package com.projet.buyback.model;
+package com.projet.buyback.model.spectacle;
 
 import java.time.LocalDate;
 
+import com.projet.buyback.model.Address;
+import com.projet.buyback.model.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

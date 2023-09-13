@@ -2,12 +2,6 @@ package com.projet.buyback.schema.request.jwt;
 
 import java.time.LocalDate;
 
-import org.springframework.stereotype.Component;
-
-import com.projet.buyback.model.Address;
-import com.projet.buyback.model.SportCategory;
-import com.projet.buyback.model.User;
-
 public class SportRequest {
 
 	private String name;

@@ -1,8 +1,8 @@
-package com.projet.buyback.repository;
+package com.projet.buyback.repository.security;
 
 import java.util.Optional;
 
-import com.projet.buyback.model.RefreshToken;
+import com.projet.buyback.model.security.RefreshToken;
 import com.projet.buyback.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

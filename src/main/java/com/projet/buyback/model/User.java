@@ -1,5 +1,6 @@
 package com.projet.buyback.model;
 
+import com.projet.buyback.model.security.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

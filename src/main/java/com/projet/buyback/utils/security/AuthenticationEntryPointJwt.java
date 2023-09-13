@@ -1,4 +1,4 @@
-package com.projet.buyback.utils.jwt;
+package com.projet.buyback.utils.security;
 
 import java.io.IOException;
 import java.util.HashMap;

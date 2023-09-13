@@ -7,8 +7,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.projet.buyback.model.Sport;
-import com.projet.buyback.repository.SportRepository;
+import com.projet.buyback.model.sport.Sport;
+import com.projet.buyback.repository.sport.SportRepository;
 import com.projet.buyback.schema.request.jwt.SportDtoResponse;
 
 @Service
@@ -23,7 +23,7 @@ public class SportService {
 		for (Sport sport : sportTickets) {
 			sportTicketsDto.add(new SportDtoResponse(sport.getId(),sport.getName(), sport.getPrice(), sport.getStartDate(),
 					sport.getEndDate(), sport.getAddress(), sport.getSportCategory(), sport.getUser().getId(),
-					sport.getUser().getUsername(), sport.getUser().getEmail()));
+					sport.getUser().getEmail(), sport.getUser().getEmail()));
 		}
 		return sportTicketsDto;
 	}
@@ -41,7 +41,7 @@ public class SportService {
 			sportDtoresponse.setAddress(sportTicket.getAddress());
 			sportDtoresponse.setCategory(sportTicket.getSportCategory());
 			sportDtoresponse.setUserId(sportTicket.getUser().getId());
-			sportDtoresponse.setUsername(sportTicket.getUser().getUsername());
+			sportDtoresponse.setUsername(sportTicket.getUser().getEmail());
 			sportDtoresponse.setEmail(sportTicket.getUser().getEmail());
 		}
 		return sportDtoresponse;
@@ -58,7 +58,7 @@ public class SportService {
 		sportDtoResponse.setAddress(savedSport.getAddress());
 		sportDtoResponse.setCategory(savedSport.getSportCategory());
 		sportDtoResponse.setUserId(savedSport.getUser().getId());
-		sportDtoResponse.setUsername(savedSport.getUser().getUsername());
+		sportDtoResponse.setUsername(savedSport.getUser().getEmail());
 		sportDtoResponse.setEmail(savedSport.getUser().getEmail());
 		return sportDtoResponse; 
 	}

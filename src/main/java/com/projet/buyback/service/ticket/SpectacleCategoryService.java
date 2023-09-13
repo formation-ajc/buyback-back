@@ -5,8 +5,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.projet.buyback.model.SpectacleCategory;
-import com.projet.buyback.repository.SpectacleCategoryRepository;
+import com.projet.buyback.model.spectacle.SpectacleCategory;
+import com.projet.buyback.repository.spectacle.SpectacleCategoryRepository;
 
 @Service
 public class SpectacleCategoryService {
