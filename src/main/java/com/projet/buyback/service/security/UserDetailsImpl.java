@@ -19,7 +19,7 @@ public class UserDetailsImpl implements UserDetails {
 
     private final Long id;
 
-    private final String email;
+    private String email;
 
     @JsonIgnore
     private String password;
@@ -57,6 +57,10 @@ public class UserDetailsImpl implements UserDetails {
 
     public String getEmail() {
         return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override

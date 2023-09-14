@@ -6,12 +6,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.projet.buyback.exception.TokenRefreshException;
-import com.projet.buyback.schema.request.jwt.LoginRequest;
-import com.projet.buyback.schema.request.jwt.RefreshTokenRequest;
-import com.projet.buyback.schema.request.jwt.SignupRequest;
-import com.projet.buyback.schema.response.jwt.MessageResponse;
-import com.projet.buyback.schema.response.jwt.SignupResponse;
-import com.projet.buyback.schema.response.jwt.TokenRefreshResponse;
+import com.projet.buyback.schema.request.security.LoginRequest;
+import com.projet.buyback.schema.request.security.RefreshTokenRequest;
+import com.projet.buyback.schema.request.security.SignupRequest;
+import com.projet.buyback.schema.response.security.MessageResponse;
+import com.projet.buyback.schema.response.security.SignupResponse;
+import com.projet.buyback.schema.response.security.TokenRefreshResponse;
 import com.projet.buyback.model.security.ERole;
 import com.projet.buyback.model.security.RefreshToken;
 import com.projet.buyback.model.security.Role;

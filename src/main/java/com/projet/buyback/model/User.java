@@ -20,7 +20,7 @@ public class User {
 
     @NotBlank
     @Email
-    @Column(name = "email", updatable = false, nullable = false, unique = true)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @NotBlank
@@ -46,6 +46,12 @@ public class User {
 //    private Set<Show> shows = new HashSet<>();
 
     public User() {
+    }
+
+    public User(String firstname, String lastname, String email) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
     }
 
     public User(String firstname, String lastname, String email, String password) {
@@ -101,5 +107,17 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+            "id=" + id +
+            ", email='" + email + '\'' +
+            ", password='" + password + '\'' +
+            ", firstname='" + firstname + '\'' +
+            ", lastname='" + lastname + '\'' +
+            ", roles=" + roles +
+            '}';
     }
 }
