@@ -21,6 +21,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,18 +43,22 @@ public class UserController {
 
     RefreshTokenService refreshTokenService;
 
+    PasswordEncoder encoder;
+
     public UserController(
         AuthenticationManager authenticationManager,
         UserRepository userRepository,
         UserService userService,
         JwtUtils jwtUtils,
-        RefreshTokenService refreshTokenService
+        RefreshTokenService refreshTokenService,
+        PasswordEncoder encoder
     ) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.userService = userService;
         this.jwtUtils = jwtUtils;
         this.refreshTokenService = refreshTokenService;
+        this.encoder = encoder;
     }
 
     @PostMapping("/update")
@@ -77,7 +82,6 @@ public class UserController {
                 }
 
             }
-
 
             //On update l'utilisateur
             User updateUser = new User(
@@ -118,15 +122,43 @@ public class UserController {
     }
 
     @PostMapping("/update-password")
-    public ResponseEntity<?> updatePassword(@Valid @RequestBody UpdatePasswordUserRequest updatePasswordUserRequest) {
+    public ResponseEntity<?> updatePassword(@RequestHeader(HttpHeaders.AUTHORIZATION) String headerAuth, @Valid @RequestBody UpdatePasswordUserRequest updatePasswordUserRequest) {
         try {
+            String actualEmail = jwtUtils.getEmailFromJwtToken(headerAuth.split(" ")[1]);
+            Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(actualEmail, updatePasswordUserRequest.getPassword()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            return ResponseEntity.ok(new MessageResponse("User modify successfully!"));
+            // On récupère l'utilisateur
+            User actualUser = null;
+            if (userRepository.findByEmail(actualEmail).isPresent()) {
+                actualUser = userRepository.findByEmail(actualEmail).get();
+            }
+
+
+            // On update l'utilisateur
+            User updateUser = new User();
+            if (actualUser != null) {
+                updateUser.setId(actualUser.getId());
+                updateUser.setFirstname(actualUser.getFirstname());
+                updateUser.setLastname(actualUser.getLastname());
+                updateUser.setEmail(actualUser.getEmail());
+                updateUser.setPassword(encoder.encode(updatePasswordUserRequest.getNewPassword()));
+            }
+            User userUpdated = userService.update(updateUser);
+
+            //On change le password
+            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+            // nouveau password
+            userDetails.setPassword(userUpdated.getPassword());
+
+            return ResponseEntity.ok(new MessageResponse("Password changed!"));
         }
         catch(Exception e) {// see note 2
             return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
-                .body(new MessageResponse("Error: User not exist!"));
+                .body(new MessageResponse("Error: Password unchanged!"));
         }
     }
 }
