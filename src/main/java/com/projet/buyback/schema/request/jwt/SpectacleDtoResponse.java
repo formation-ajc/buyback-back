@@ -16,13 +16,16 @@ public class SpectacleDtoResponse {
 	private SpectacleCategory category;
 	private Long userId;
 	private String email;
+	private String firstName;
+	private String lastName;
 
 	public SpectacleDtoResponse() {
 		super();
 	}
 
+
 	public SpectacleDtoResponse(Long id, String name, Double price, LocalDate startDate, LocalDate endDate,
-			Address address, SpectacleCategory category, Long userId, String email) {
+			Address address, SpectacleCategory category, Long userId, String email, String firstName, String lastName) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -33,7 +36,11 @@ public class SpectacleDtoResponse {
 		this.category = category;
 		this.userId = userId;
 		this.email = email;
+		this.firstName = firstName;
+		this.lastName = lastName;
 	}
+
+
 
 	public Long getId() {
 		return id;
@@ -107,12 +114,33 @@ public class SpectacleDtoResponse {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+
+	public String getLastName() {
+		return lastName;
+	}
+
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
 
 	@Override
 	public String toString() {
 		return "SpectacleDtoResponse [id=" + id + ", name=" + name + ", price=" + price + ", startDate=" + startDate
 				+ ", endDate=" + endDate + ", address=" + address + ", category=" + category + ", userId=" + userId
-				+ ", email=" + email + "]";
+				+ ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + "]";
 	}
+
 
 }

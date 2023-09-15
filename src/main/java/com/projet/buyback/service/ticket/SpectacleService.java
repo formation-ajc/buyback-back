@@ -18,15 +18,20 @@ public class SpectacleService {
 	private SpectacleRepository spectacleRepository;
 
 	public List<SpectacleDtoResponse> getAllSpectacleTickets() {
-		List<SpectacleDtoResponse> spectacleTicketsDto = new ArrayList<>();
-
 		List<Spectacle> spectacleTickets = spectacleRepository.findAll();
-		for (Spectacle spectacle : spectacleTickets) {
-			spectacleTicketsDto.add(new SpectacleDtoResponse(spectacle.getId(), spectacle.getName(),
-					spectacle.getPrice(), spectacle.getStartDate(), spectacle.getEndDate(), spectacle.getAddress(),
-					spectacle.getSpectacleCategory(), spectacle.getUser().getId(), spectacle.getUser().getEmail()));
+		if(!spectacleTickets.isEmpty()) {
+			
+			List<SpectacleDtoResponse> spectacleTicketsDto = new ArrayList<>();
+			
+			for (Spectacle spectacle : spectacleTickets) {
+				spectacleTicketsDto.add(new SpectacleDtoResponse(spectacle.getId(), spectacle.getName(),
+						spectacle.getPrice(), spectacle.getStartDate(), spectacle.getEndDate(), spectacle.getAddress(),
+						spectacle.getSpectacleCategory(), spectacle.getUser().getId(), spectacle.getUser().getEmail(), spectacle.getUser().getFirstname(), spectacle.getUser().getLastname()));
+			}
+			return spectacleTicketsDto;
+		}else {
+			return null;
 		}
-		return spectacleTicketsDto;
 	}
 
 	public SpectacleDtoResponse getSpectacleTicketById(Long id) {
@@ -43,23 +48,33 @@ public class SpectacleService {
 			spectacleDtoResponse.setCategory(spectacleTicket.getSpectacleCategory());
 			spectacleDtoResponse.setUserId(spectacleTicket.getUser().getId());
 			spectacleDtoResponse.setEmail(spectacleTicket.getUser().getEmail());
+			spectacleDtoResponse.setFirstName(spectacleTicket.getUser().getFirstname());
+			spectacleDtoResponse.setLastName(spectacleTicket.getUser().getLastname());
+			return spectacleDtoResponse;
+		}else {
+			return null;
 		}
-		return spectacleDtoResponse;
 	}
 
 	public SpectacleDtoResponse createSpectacleTicket(Spectacle spectacleTicket) {
 		Spectacle savedSpectacle = spectacleRepository.save(spectacleTicket);
-		SpectacleDtoResponse spectacleDtoResponse = new SpectacleDtoResponse();
-		spectacleDtoResponse.setId(savedSpectacle.getId());
-		spectacleDtoResponse.setName(savedSpectacle.getName());
-		spectacleDtoResponse.setPrice(savedSpectacle.getPrice());
-		spectacleDtoResponse.setStartDate(savedSpectacle.getStartDate());
-		spectacleDtoResponse.setEndDate(savedSpectacle.getEndDate());
-		spectacleDtoResponse.setAddress(savedSpectacle.getAddress());
-		spectacleDtoResponse.setCategory(savedSpectacle.getSpectacleCategory());
-		spectacleDtoResponse.setUserId(savedSpectacle.getUser().getId());
-		spectacleDtoResponse.setEmail(savedSpectacle.getUser().getEmail());
-		return spectacleDtoResponse;
+		if(savedSpectacle != null) {			
+			SpectacleDtoResponse spectacleDtoResponse = new SpectacleDtoResponse();
+			spectacleDtoResponse.setId(savedSpectacle.getId());
+			spectacleDtoResponse.setName(savedSpectacle.getName());
+			spectacleDtoResponse.setPrice(savedSpectacle.getPrice());
+			spectacleDtoResponse.setStartDate(savedSpectacle.getStartDate());
+			spectacleDtoResponse.setEndDate(savedSpectacle.getEndDate());
+			spectacleDtoResponse.setAddress(savedSpectacle.getAddress());
+			spectacleDtoResponse.setCategory(savedSpectacle.getSpectacleCategory());
+			spectacleDtoResponse.setUserId(savedSpectacle.getUser().getId());
+			spectacleDtoResponse.setEmail(savedSpectacle.getUser().getEmail());
+			spectacleDtoResponse.setFirstName(savedSpectacle.getUser().getFirstname());
+			spectacleDtoResponse.setLastName(savedSpectacle.getUser().getLastname());
+			return spectacleDtoResponse;
+		}else {
+			return null;
+		}
 	}
 
 	public void deleteSpectacleTicketById(Long id) {

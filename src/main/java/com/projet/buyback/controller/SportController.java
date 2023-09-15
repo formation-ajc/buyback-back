@@ -23,6 +23,7 @@ import com.projet.buyback.repository.sport.SportRepository;
 import com.projet.buyback.repository.UserRepository;
 import com.projet.buyback.schema.request.jwt.SportDtoResponse;
 import com.projet.buyback.schema.request.jwt.SportRequest;
+import com.projet.buyback.schema.response.jwt.MessageResponse;
 import com.projet.buyback.service.ticket.SportCategoryService;
 import com.projet.buyback.service.ticket.SportService;
 
@@ -41,119 +42,188 @@ public class SportController {
 	private SportRepository sportRepository;
 
 	@GetMapping("/sports")
-	public ResponseEntity<List<SportDtoResponse>> getAllSportTickets() {
+	public ResponseEntity<?> getAllSportTickets() {
 		List<SportDtoResponse> sportTickets = sportService.getAllSportTickets();
-		if (sportTickets == null) {
-			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-		} else {
+		if (sportTickets != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(sportTickets);
+		} else {
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new MessageResponse("Result is empty !"));
 		}
 	}
 
 	@GetMapping("/sports/{id}")
-	public ResponseEntity<SportDtoResponse> getSportTicketById(@PathVariable("id") Long sportId) {
+	public ResponseEntity<?> getSportTicketById(@PathVariable("id") Long sportId) {
 		SportDtoResponse sportDtoResponse = sportService.getSportTicketById(sportId);
 		if (sportDtoResponse != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(sportDtoResponse);
 		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); 
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Ticket not found !"));
 		}
 	}
 
 	@PostMapping("/sports")
-	public ResponseEntity<SportDtoResponse> createSportTicket(@RequestBody SportRequest sportReq) {
-
+	public ResponseEntity<?> createSportTicket(@RequestBody SportRequest sportReq) {
 		try {
 			Sport newSportTicket = new Sport();
 			if (sportReq.getName() != null) {
 				newSportTicket.setName(sportReq.getName());
+			} else {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(new MessageResponse("The name cannot be empty !"));
 			}
 			if (sportReq.getPrice() != null) {
 				newSportTicket.setPrice(sportReq.getPrice());
+			} else {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(new MessageResponse("The price cannot be empty !"));
 			}
 			if (sportReq.getStartDate() != null) {
 				newSportTicket.setStartDate(sportReq.getStartDate());
+			} else {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(new MessageResponse("The start date cannot be empty !"));
 			}
 			if (sportReq.getEndDate() != null) {
 				newSportTicket.setEndDate(sportReq.getEndDate());
+			} else {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(new MessageResponse("The end date cannot be empty !"));
 			}
-
-			if (sportReq.getAddressName() != null && sportReq.getAddressZipcode() != null) {
-				Address address = new Address(sportReq.getAddressName(), sportReq.getAddressZipcode());
-				newSportTicket.setAddress(address);
+			Address address = new Address();
+			if (sportReq.getAddressName() != null) {
+				address.setName(sportReq.getAddressName());
+			} else {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(new MessageResponse("The address name cannot be empty !"));
 			}
+			if (sportReq.getAddressZipcode() != null) {
+				address.setZipcode(sportReq.getAddressZipcode());
+			} else {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(new MessageResponse("The address zipcode cannot be empty !"));
+			}
+			newSportTicket.setAddress(address);
 			if (sportReq.getSportcategoryId() != null) {
 				Optional<SportCategory> optSportCategory = sportCategoryService
 						.getSportCategoryById(sportReq.getSportcategoryId());
 				if (optSportCategory.isPresent()) {
 					SportCategory sportCategory = optSportCategory.get();
 					newSportTicket.setSportCategory(sportCategory);
+				} else {
+					return ResponseEntity.status(HttpStatus.NOT_FOUND)
+							.body(new MessageResponse("Category not found !"));
 				}
+			} else {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(new MessageResponse("The category cannot be empty !"));
 			}
-			if (sportReq.getUserId() != null) {
-				Optional<User> optUser = userRepository.findById(sportReq.getUserId());
+			if (sportReq.getUserEmail() != null) {
+				Optional<User> optUser = userRepository.findByEmail(sportReq.getUserEmail());
 				if (optUser.isPresent()) {
 					User user = optUser.get();
 					newSportTicket.setUser(user);
 				}
 			}
 			sportService.createSportTicket(newSportTicket);
-			return ResponseEntity.status(HttpStatus.CREATED).body(sportService.createSportTicket(newSportTicket));
+
+			return ResponseEntity.status(HttpStatus.CREATED)
+					.body(new MessageResponse("Ticket registered successfully !"));
+
 		} catch (Exception e) {
-			return ResponseEntity.internalServerError().build();
+			// TODO: handle exception
+			return ResponseEntity.internalServerError()
+					.body(new MessageResponse("Problem encountred during creation !"));
 		}
 
 	}
 
 	@PutMapping("/sports/{id}")
-	public ResponseEntity<SportDtoResponse> updateSportTicket(@PathVariable("id") Long idSportTicket,
+	public ResponseEntity<?> updateSportTicket(@PathVariable("id") Long idSportTicket,
 			@RequestBody SportRequest sportReq) {
 
-		Optional<Sport> sport = sportRepository.findById(idSportTicket);
-		if (sport.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-		}
-		Sport updatedSportTicket = sport.get();
-		if (sportReq.getName() != null) {
-			updatedSportTicket.setName(sportReq.getName());
-		}
-		if (sportReq.getPrice() != null) {
-			updatedSportTicket.setPrice(sportReq.getPrice());
-		}
-		if (sportReq.getStartDate() != null) {
-			updatedSportTicket.setStartDate(sportReq.getStartDate());
-		}
-		if (sportReq.getEndDate() != null) {
-			updatedSportTicket.setEndDate(sportReq.getEndDate());
-		}
-		if (sportReq.getAddressName() != null && sportReq.getAddressZipcode() != null) {
-			updatedSportTicket.setAddress(new Address(sportReq.getAddressName(), sportReq.getAddressZipcode()));
-		}
-		Optional<SportCategory> optSportCategory = sportCategoryService
-				.getSportCategoryById(sportReq.getSportcategoryId());
-		if (optSportCategory.isPresent()) {
-			SportCategory sportCategory = optSportCategory.get();
-			updatedSportTicket.setSportCategory(sportCategory);
-		}
-		if (sportReq.getUserId() != null) {
-			Optional<User> optUser = userRepository.findById(sportReq.getUserId());
-			if (optUser.isPresent()) {
-				User user = optUser.get();
-				updatedSportTicket.setUser(user);
+		try {
+			Optional<Sport> sport = sportRepository.findById(idSportTicket);
+			if (sport.isEmpty()) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Ticket not found !"));
 			}
+			Sport updatedSportTicket = sport.get();
+			if (sportReq.getName() != null) {
+				updatedSportTicket.setName(sportReq.getName());
+			} else {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(new MessageResponse("The name cannot be empty !"));
+			}
+			if (sportReq.getPrice() != null) {
+				updatedSportTicket.setPrice(sportReq.getPrice());
+			} else {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(new MessageResponse("The price cannot be empty !"));
+			}
+			if (sportReq.getStartDate() != null) {
+				updatedSportTicket.setStartDate(sportReq.getStartDate());
+			} else {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(new MessageResponse("The start date cannot be empty !"));
+			}
+			if (sportReq.getEndDate() != null) {
+				updatedSportTicket.setEndDate(sportReq.getEndDate());
+			} else {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(new MessageResponse("The end date cannot be empty !"));
+			}
+			Address address = new Address();
+			if (sportReq.getAddressName() != null) {
+				address.setName(sportReq.getAddressName());
+			} else {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(new MessageResponse("The address name cannot be empty !"));
+			}
+			if (sportReq.getAddressZipcode() != null) {
+				address.setZipcode(sportReq.getAddressZipcode());
+			} else {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(new MessageResponse("The address zipcode cannot be empty !"));
+			}
+			updatedSportTicket.setAddress(address);
+			if (sportReq.getSportcategoryId() != null) {
+				Optional<SportCategory> optSportCategory = sportCategoryService
+						.getSportCategoryById(sportReq.getSportcategoryId());
+				if (optSportCategory.isPresent()) {
+					SportCategory sportCategory = optSportCategory.get();
+					updatedSportTicket.setSportCategory(sportCategory);
+				} else {
+					return ResponseEntity.status(HttpStatus.NOT_FOUND)
+							.body(new MessageResponse("Category not found !"));
+				}
+			} else {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(new MessageResponse("Category cannot be empty !"));
+			}
+
+			if (sportReq.getUserEmail() != null) {
+				Optional<User> optUser = userRepository.findByEmail(sportReq.getUserEmail());
+				if (optUser.isPresent()) {
+					User user = optUser.get();
+					updatedSportTicket.setUser(user);
+				}
+			}
+			sportService.createSportTicket(updatedSportTicket);
+			return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse("Ticket updated successfully !"));
+		} catch (Exception e) {
+			// TODO: handle exception
+			return ResponseEntity.internalServerError().body(new MessageResponse("Problem encoured during updating !"));
 		}
-		sportService.createSportTicket(updatedSportTicket);
-		return ResponseEntity.status(HttpStatus.OK).body(sportService.createSportTicket(updatedSportTicket));
+
 	}
 
 	@DeleteMapping("/sports/{id}")
-	public ResponseEntity<HttpStatus> deleteSportTicketById(@PathVariable("id") Long idSportTicket) {
+	public ResponseEntity<?> deleteSportTicketById(@PathVariable("id") Long idSportTicket) {
 		Optional<Sport> sport = sportRepository.findById(idSportTicket);
 		if (sport.isPresent()) {
 			sportService.deleteSportTicket(idSportTicket);
-			return ResponseEntity.status(HttpStatus.OK).build();
+			return ResponseEntity.ok(new MessageResponse("Ticket deleted successfully !"));
 		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Ticket not found !"));
 		}
 	}
 }

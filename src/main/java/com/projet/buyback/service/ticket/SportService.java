@@ -19,12 +19,17 @@ public class SportService {
 
 	public List<SportDtoResponse> getAllSportTickets() {
 		List<Sport> sportTickets = sportRepository.findAll();
-		List<SportDtoResponse> sportTicketsDto = new ArrayList<>();
-		for (Sport sport : sportTickets) {
-			sportTicketsDto.add(new SportDtoResponse(sport.getId(),sport.getName(), sport.getPrice(), sport.getStartDate(),
-					sport.getEndDate(), sport.getAddress(), sport.getSportCategory(), sport.getUser().getId(), sport.getUser().getEmail()));
+		if (!sportTickets.isEmpty()) {
+			List<SportDtoResponse> sportTicketsDto = new ArrayList<>();
+			for (Sport sport : sportTickets) {
+				sportTicketsDto.add(new SportDtoResponse(sport.getId(), sport.getName(), sport.getPrice(),
+						sport.getStartDate(), sport.getEndDate(), sport.getAddress(), sport.getSportCategory(),
+						sport.getUser().getId(), sport.getUser().getEmail(), sport.getUser().getFirstname(), sport.getUser().getLastname()));
+			}
+			return sportTicketsDto;
+		} else {
+			return null;
 		}
-		return sportTicketsDto;
 	}
 
 	public SportDtoResponse getSportTicketById(Long id) {
@@ -41,23 +46,33 @@ public class SportService {
 			sportDtoresponse.setCategory(sportTicket.getSportCategory());
 			sportDtoresponse.setUserId(sportTicket.getUser().getId());
 			sportDtoresponse.setEmail(sportTicket.getUser().getEmail());
+			sportDtoresponse.setFirstName(sportTicket.getUser().getFirstname());
+			sportDtoresponse.setLastName(sportTicket.getUser().getLastname());
+			return sportDtoresponse;
+		} else {
+			return null;
 		}
-		return sportDtoresponse;
 	}
 
 	public SportDtoResponse createSportTicket(Sport sportTicket) {
 		Sport savedSport = sportRepository.save(sportTicket);
-		SportDtoResponse sportDtoResponse = new SportDtoResponse();
-		sportDtoResponse.setId(savedSport.getId());
-		sportDtoResponse.setName(savedSport.getName());
-		sportDtoResponse.setPrice(savedSport.getPrice());
-		sportDtoResponse.setStartDate(savedSport.getStartDate());
-		sportDtoResponse.setEndDate(savedSport.getEndDate());
-		sportDtoResponse.setAddress(savedSport.getAddress());
-		sportDtoResponse.setCategory(savedSport.getSportCategory());
-		sportDtoResponse.setUserId(savedSport.getUser().getId());
-		sportDtoResponse.setEmail(savedSport.getUser().getEmail());
-		return sportDtoResponse; 
+		if(savedSport != null) {			
+			SportDtoResponse sportDtoResponse = new SportDtoResponse();
+			sportDtoResponse.setId(savedSport.getId());
+			sportDtoResponse.setName(savedSport.getName());
+			sportDtoResponse.setPrice(savedSport.getPrice());
+			sportDtoResponse.setStartDate(savedSport.getStartDate());
+			sportDtoResponse.setEndDate(savedSport.getEndDate());
+			sportDtoResponse.setAddress(savedSport.getAddress());
+			sportDtoResponse.setCategory(savedSport.getSportCategory());
+			sportDtoResponse.setUserId(savedSport.getUser().getId());
+			sportDtoResponse.setEmail(savedSport.getUser().getEmail());
+			sportDtoResponse.setFirstName(savedSport.getUser().getFirstname());
+			sportDtoResponse.setLastName(savedSport.getUser().getLastname());
+			return sportDtoResponse;
+		}else {
+			return null;
+		}
 	}
 
 	public void deleteSportTicket(Long id) {

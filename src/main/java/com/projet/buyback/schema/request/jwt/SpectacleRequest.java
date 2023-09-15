@@ -11,7 +11,7 @@ public class SpectacleRequest {
 	private String addressName;
 	private String addressZipcode;
 	private Long spectaclecategoryId;
-	private Long userId;
+	private String userEmail;
 
 	public String getName() {
 		return name;
@@ -61,7 +61,6 @@ public class SpectacleRequest {
 		this.addressZipcode = addressZipcode;
 	}
 
-
 	public Long getSpectaclecategoryId() {
 		return spectaclecategoryId;
 	}
@@ -70,19 +69,19 @@ public class SpectacleRequest {
 		this.spectaclecategoryId = spectaclecategoryId;
 	}
 
-	public Long getUserId() {
-		return userId;
+	public String getUserEmail() {
+		return userEmail;
 	}
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
 	}
 
 	@Override
 	public String toString() {
 		return "SpectacleRequest [name=" + name + ", price=" + price + ", startDate=" + startDate + ", endDate="
-				+ endDate + ", addressName=" + addressName + ", addressZipcode=" + addressZipcode + ", spectaclecategoryId="
-				+ spectaclecategoryId + ", userId=" + userId + "]";
+				+ endDate + ", addressName=" + addressName + ", addressZipcode=" + addressZipcode
+				+ ", spectaclecategoryId=" + spectaclecategoryId + ", userEmail=" + userEmail + "]";
 	}
 
 }
