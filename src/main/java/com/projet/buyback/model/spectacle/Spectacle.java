@@ -37,8 +37,11 @@ public class Spectacle {
 	@JoinColumn(name = "spectacleCategory_id")
 	private SpectacleCategory spectacleCategory;
 	@ManyToOne
-	@JoinColumn(name = "user_id")
-	private User user;
+	@JoinColumn(name = "forsale_user_id")
+	private User forsaleUserId;
+	@ManyToOne
+	@JoinColumn(name = "purshased_user_id")
+	private User purshasedUserId;
 
 	public Spectacle() {
 		super();
@@ -108,18 +111,28 @@ public class Spectacle {
 		this.spectacleCategory = spectacleCategory;
 	}
 
-	public User getUser() {
-		return user;
+
+	public User getForsaleUserId() {
+		return forsaleUserId;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setForsaleUserId(User forsaleUserId) {
+		this.forsaleUserId = forsaleUserId;
+	}
+
+	public User getPurshasedUserId() {
+		return purshasedUserId;
+	}
+
+	public void setPurshasedUserId(User purshasedUserId) {
+		this.purshasedUserId = purshasedUserId;
 	}
 
 	@Override
 	public String toString() {
 		return "Spectacle [id=" + id + ", name=" + name + ", price=" + price + ", startDate=" + startDate + ", endDate="
-				+ endDate + "]";
+				+ endDate + ", address=" + address + ", spectacleCategory=" + spectacleCategory + ", forsaleUserId="
+				+ forsaleUserId + ", purshasedUserId=" + purshasedUserId + "]";
 	}
 
 }

@@ -66,7 +66,7 @@ public class SpectacleController {
 
 		try {
 			Spectacle newSpectacleTicket = new Spectacle();
-			if (spectacleReq.getName() != null) {
+			if (spectacleReq.getName() != null && !spectacleReq.getName().isEmpty()) {
 				newSpectacleTicket.setName(spectacleReq.getName());
 			} else {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -91,13 +91,13 @@ public class SpectacleController {
 						.body(new MessageResponse("The end date cannot be empty !"));
 			}
 			Address address = new Address();
-			if (spectacleReq.getAddressName() != null) {
+			if (spectacleReq.getAddressName() != null && !spectacleReq.getAddressName().isEmpty()) {
 				address.setName(spectacleReq.getName());
 			} else {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 						.body(new MessageResponse("The address name cannot be empty !"));
 			}
-			if (spectacleReq.getAddressZipcode() != null) {
+			if (spectacleReq.getAddressZipcode() != null && !spectacleReq.getAddressZipcode().isEmpty()) {
 				address.setName(spectacleReq.getAddressZipcode());
 			} else {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -122,7 +122,7 @@ public class SpectacleController {
 				Optional<User> optUser = userRepository.findByEmail(spectacleReq.getUserEmail());
 				if (optUser.isPresent()) {
 					User user = optUser.get();
-					newSpectacleTicket.setUser(user);
+					newSpectacleTicket.setForsaleUserId(user);
 				}
 			}
 			spectacleService.createSpectacleTicket(newSpectacleTicket);
@@ -144,7 +144,7 @@ public class SpectacleController {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Ticket not found !"));
 			}
 			Spectacle updatedSpectacleTicket = spectacle.get();
-			if (spectacleReq.getName() != null) {
+			if (spectacleReq.getName() != null && !spectacleReq.getName().isEmpty()) {
 				updatedSpectacleTicket.setName(spectacleReq.getName());
 			} else {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -169,13 +169,13 @@ public class SpectacleController {
 						.body(new MessageResponse("The end date cannot be empty !"));
 			}
 			Address address = new Address();
-			if (spectacleReq.getAddressName() != null) {
+			if (spectacleReq.getAddressName() != null && !spectacleReq.getAddressName().isEmpty()) {
 				address.setName(spectacleReq.getAddressName());
 			} else {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 						.body(new MessageResponse("The address name cannot be empty !"));
 			}
-			if (spectacleReq.getAddressZipcode() != null) {
+			if (spectacleReq.getAddressZipcode() != null && !spectacleReq.getAddressZipcode().isEmpty()) {
 				address.setZipcode(spectacleReq.getAddressZipcode());
 			} else {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -200,7 +200,7 @@ public class SpectacleController {
 				Optional<User> optUser = userRepository.findByEmail(spectacleReq.getUserEmail());
 				if (optUser.isPresent()) {
 					User user = optUser.get();
-					updatedSpectacleTicket.setUser(user);
+					updatedSpectacleTicket.setForsaleUserId(user);
 				}
 			}
 			spectacleService.createSpectacleTicket(updatedSpectacleTicket);

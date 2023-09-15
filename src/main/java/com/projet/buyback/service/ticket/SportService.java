@@ -24,7 +24,7 @@ public class SportService {
 			for (Sport sport : sportTickets) {
 				sportTicketsDto.add(new SportDtoResponse(sport.getId(), sport.getName(), sport.getPrice(),
 						sport.getStartDate(), sport.getEndDate(), sport.getAddress(), sport.getSportCategory(),
-						sport.getUser().getId(), sport.getUser().getEmail(), sport.getUser().getFirstname(), sport.getUser().getLastname()));
+						sport.getForsaleUserId().getId(), sport.getForsaleUserId().getEmail(), sport.getForsaleUserId().getFirstname(), sport.getForsaleUserId().getLastname()));
 			}
 			return sportTicketsDto;
 		} else {
@@ -44,10 +44,10 @@ public class SportService {
 			sportDtoresponse.setEndDate(sportTicket.getEndDate());
 			sportDtoresponse.setAddress(sportTicket.getAddress());
 			sportDtoresponse.setCategory(sportTicket.getSportCategory());
-			sportDtoresponse.setUserId(sportTicket.getUser().getId());
-			sportDtoresponse.setEmail(sportTicket.getUser().getEmail());
-			sportDtoresponse.setFirstName(sportTicket.getUser().getFirstname());
-			sportDtoresponse.setLastName(sportTicket.getUser().getLastname());
+			sportDtoresponse.setUserId(sportTicket.getForsaleUserId().getId());
+			sportDtoresponse.setEmail(sportTicket.getForsaleUserId().getEmail());
+			sportDtoresponse.setFirstName(sportTicket.getForsaleUserId().getFirstname());
+			sportDtoresponse.setLastName(sportTicket.getForsaleUserId().getLastname());
 			return sportDtoresponse;
 		} else {
 			return null;
@@ -65,10 +65,10 @@ public class SportService {
 			sportDtoResponse.setEndDate(savedSport.getEndDate());
 			sportDtoResponse.setAddress(savedSport.getAddress());
 			sportDtoResponse.setCategory(savedSport.getSportCategory());
-			sportDtoResponse.setUserId(savedSport.getUser().getId());
-			sportDtoResponse.setEmail(savedSport.getUser().getEmail());
-			sportDtoResponse.setFirstName(savedSport.getUser().getFirstname());
-			sportDtoResponse.setLastName(savedSport.getUser().getLastname());
+			sportDtoResponse.setUserId(savedSport.getForsaleUserId().getId());
+			sportDtoResponse.setEmail(savedSport.getForsaleUserId().getEmail());
+			sportDtoResponse.setFirstName(savedSport.getForsaleUserId().getFirstname());
+			sportDtoResponse.setLastName(savedSport.getForsaleUserId().getLastname());
 			return sportDtoResponse;
 		}else {
 			return null;

@@ -36,8 +36,11 @@ public class Sport {
 	@JoinColumn(name = "sportCategory_id")
 	private SportCategory sportCategory;
 	@ManyToOne
-	@JoinColumn(name = "user_id")
-	private User user;
+	@JoinColumn(name = "forsale_user_id")
+	private User forsaleUserId;
+	@ManyToOne
+	@JoinColumn(name = "purshase_user_id")
+	private User purshaseUserId;
 
 	public Long getId() {
 		return id;
@@ -97,18 +100,28 @@ public class Sport {
 		this.sportCategory = sportCategory;
 	}
 
-	public User getUser() {
-		return user;
+
+	public User getForsaleUserId() {
+		return forsaleUserId;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setForsaleUserId(User forsaleUserId) {
+		this.forsaleUserId = forsaleUserId;
+	}
+
+	public User getPurshaseUserId() {
+		return purshaseUserId;
+	}
+
+	public void setPurshaseUserId(User purshaseUserId) {
+		this.purshaseUserId = purshaseUserId;
 	}
 
 	@Override
 	public String toString() {
 		return "Sport [id=" + id + ", name=" + name + ", price=" + price + ", startDate=" + startDate + ", endDate="
-				+ endDate + ", address=" + address + ", sportCategory=" + sportCategory + ", user=" + user + "]";
+				+ endDate + ", address=" + address + ", sportCategory=" + sportCategory + ", forsaleUserId="
+				+ forsaleUserId + ", purshaseUserId=" + purshaseUserId + "]";
 	}
 
 

@@ -26,7 +26,7 @@ public class SpectacleService {
 			for (Spectacle spectacle : spectacleTickets) {
 				spectacleTicketsDto.add(new SpectacleDtoResponse(spectacle.getId(), spectacle.getName(),
 						spectacle.getPrice(), spectacle.getStartDate(), spectacle.getEndDate(), spectacle.getAddress(),
-						spectacle.getSpectacleCategory(), spectacle.getUser().getId(), spectacle.getUser().getEmail(), spectacle.getUser().getFirstname(), spectacle.getUser().getLastname()));
+						spectacle.getSpectacleCategory(), spectacle.getForsaleUserId().getId(), spectacle.getForsaleUserId().getEmail(), spectacle.getForsaleUserId().getFirstname(), spectacle.getForsaleUserId().getLastname()));
 			}
 			return spectacleTicketsDto;
 		}else {
@@ -46,10 +46,10 @@ public class SpectacleService {
 			spectacleDtoResponse.setEndDate(spectacleTicket.getEndDate());
 			spectacleDtoResponse.setAddress(spectacleTicket.getAddress());
 			spectacleDtoResponse.setCategory(spectacleTicket.getSpectacleCategory());
-			spectacleDtoResponse.setUserId(spectacleTicket.getUser().getId());
-			spectacleDtoResponse.setEmail(spectacleTicket.getUser().getEmail());
-			spectacleDtoResponse.setFirstName(spectacleTicket.getUser().getFirstname());
-			spectacleDtoResponse.setLastName(spectacleTicket.getUser().getLastname());
+			spectacleDtoResponse.setUserId(spectacleTicket.getForsaleUserId().getId());
+			spectacleDtoResponse.setEmail(spectacleTicket.getForsaleUserId().getEmail());
+			spectacleDtoResponse.setFirstName(spectacleTicket.getForsaleUserId().getFirstname());
+			spectacleDtoResponse.setLastName(spectacleTicket.getForsaleUserId().getLastname());
 			return spectacleDtoResponse;
 		}else {
 			return null;
@@ -67,10 +67,10 @@ public class SpectacleService {
 			spectacleDtoResponse.setEndDate(savedSpectacle.getEndDate());
 			spectacleDtoResponse.setAddress(savedSpectacle.getAddress());
 			spectacleDtoResponse.setCategory(savedSpectacle.getSpectacleCategory());
-			spectacleDtoResponse.setUserId(savedSpectacle.getUser().getId());
-			spectacleDtoResponse.setEmail(savedSpectacle.getUser().getEmail());
-			spectacleDtoResponse.setFirstName(savedSpectacle.getUser().getFirstname());
-			spectacleDtoResponse.setLastName(savedSpectacle.getUser().getLastname());
+			spectacleDtoResponse.setUserId(savedSpectacle.getForsaleUserId().getId());
+			spectacleDtoResponse.setEmail(savedSpectacle.getForsaleUserId().getEmail());
+			spectacleDtoResponse.setFirstName(savedSpectacle.getForsaleUserId().getFirstname());
+			spectacleDtoResponse.setLastName(savedSpectacle.getForsaleUserId().getLastname());
 			return spectacleDtoResponse;
 		}else {
 			return null;

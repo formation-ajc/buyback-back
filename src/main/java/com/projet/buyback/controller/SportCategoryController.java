@@ -20,7 +20,7 @@ public class SportCategoryController {
 	private SportCategoryService sportCategoryService;
 	
 	@GetMapping("/sportCategories")
-	public ResponseEntity<List<SportCategory>> getAllSportTickets() {
+	public ResponseEntity<List<SportCategory>> getAllSportCategories() {
 		List<SportCategory> sportCategories = sportCategoryService.getAllSportCategories();
 		if (!sportCategories.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.OK).body(sportCategories); 
