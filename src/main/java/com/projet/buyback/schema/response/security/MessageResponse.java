@@ -1,4 +1,4 @@
-package com.projet.buyback.schema.response.jwt;
+package com.projet.buyback.schema.response.security;
 
 public class MessageResponse {
     private String message;
