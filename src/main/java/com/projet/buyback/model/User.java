@@ -1,6 +1,8 @@
 package com.projet.buyback.model;
 
 import com.projet.buyback.model.security.Role;
+
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -40,10 +42,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-//    private Set<Sport> sports = new HashSet<>();
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-//    private Set<Show> shows = new HashSet<>();
+  
 
     public User() {
     }
@@ -102,4 +101,7 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
+    
+    
 }
