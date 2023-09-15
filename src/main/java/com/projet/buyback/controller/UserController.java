@@ -124,6 +124,12 @@ public class UserController {
     @PostMapping("/update-password")
     public ResponseEntity<?> updatePassword(@RequestHeader(HttpHeaders.AUTHORIZATION) String headerAuth, @Valid @RequestBody UpdatePasswordUserRequest updatePasswordUserRequest) {
         try {
+
+            //On check si les mots de passes sont identiques
+            if (!updatePasswordUserRequest.getNewPassword().equals(updatePasswordUserRequest.getConfirmNewPassword())) {
+                return ResponseEntity.badRequest().body(new MessageResponse("Error: Password must be identical!"));
+            }
+
             String actualEmail = jwtUtils.getEmailFromJwtToken(headerAuth.split(" ")[1]);
             Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(actualEmail, updatePasswordUserRequest.getPassword()));
@@ -134,6 +140,7 @@ public class UserController {
             if (userRepository.findByEmail(actualEmail).isPresent()) {
                 actualUser = userRepository.findByEmail(actualEmail).get();
             }
+
 
 
             // On update l'utilisateur

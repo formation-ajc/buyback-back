@@ -23,7 +23,7 @@ import com.projet.buyback.repository.spectacle.SpectacleRepository;
 import com.projet.buyback.repository.UserRepository;
 import com.projet.buyback.schema.request.jwt.SpectacleDtoResponse;
 import com.projet.buyback.schema.request.jwt.SpectacleRequest;
-import com.projet.buyback.schema.response.jwt.MessageResponse;
+import com.projet.buyback.schema.response.security.MessageResponse;
 import com.projet.buyback.service.ticket.SpectacleCategoryService;
 import com.projet.buyback.service.ticket.SpectacleService;
 

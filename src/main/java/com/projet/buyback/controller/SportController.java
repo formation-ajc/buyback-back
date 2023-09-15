@@ -23,7 +23,7 @@ import com.projet.buyback.repository.sport.SportRepository;
 import com.projet.buyback.repository.UserRepository;
 import com.projet.buyback.schema.request.jwt.SportDtoResponse;
 import com.projet.buyback.schema.request.jwt.SportRequest;
-import com.projet.buyback.schema.response.jwt.MessageResponse;
+import com.projet.buyback.schema.response.security.MessageResponse;
 import com.projet.buyback.service.ticket.SportCategoryService;
 import com.projet.buyback.service.ticket.SportService;
 
