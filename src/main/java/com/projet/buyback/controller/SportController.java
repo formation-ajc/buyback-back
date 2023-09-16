@@ -77,11 +77,17 @@ public class SportController {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 						.body(new MessageResponse("The price cannot be empty !"));
 			}
-			if (sportReq.getStartDate() != null) {
+			if (sportReq.getStartDate() != null && sportReq.getEndDate() != null) {
+				if(sportReq.getStartDate().compareTo(sportReq.getEndDate()) > 0){
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+							.body(new MessageResponse("The start date cannot be after the end date !"));
+				}
 				newSportTicket.setStartDate(sportReq.getStartDate());
+				newSportTicket.setEndDate(sportReq.getEndDate());
+
 			} else {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-						.body(new MessageResponse("The start date cannot be empty !"));
+						.body(new MessageResponse("The start date and the end date cannot be empty !"));
 			}
 			if (sportReq.getEndDate() != null) {
 				newSportTicket.setEndDate(sportReq.getEndDate());
@@ -113,7 +119,7 @@ public class SportController {
 					newSportTicket.setSportCategory(sportCategory);
 				} else {
 					return ResponseEntity.status(HttpStatus.NOT_FOUND)
-							.body(new MessageResponse("Category not found !"));
+							.body(new MessageResponse("Category not found !")); 
 				}
 			} else {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -161,17 +167,17 @@ public class SportController {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 						.body(new MessageResponse("The price cannot be empty !"));
 			}
-			if (sportReq.getStartDate() != null) {
+			if (sportReq.getStartDate() != null && sportReq.getEndDate() != null) {
+				if(sportReq.getStartDate().compareTo(sportReq.getEndDate()) > 0){
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+							.body(new MessageResponse("The start date cannot be after the end date !"));
+				}
 				updatedSportTicket.setStartDate(sportReq.getStartDate());
-			} else {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-						.body(new MessageResponse("The start date cannot be empty !"));
-			}
-			if (sportReq.getEndDate() != null) {
 				updatedSportTicket.setEndDate(sportReq.getEndDate());
+
 			} else {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-						.body(new MessageResponse("The end date cannot be empty !"));
+						.body(new MessageResponse("The start date and the end date cannot be empty !"));
 			}
 			Address address = new Address();
 			if (sportReq.getAddressName() != null) {

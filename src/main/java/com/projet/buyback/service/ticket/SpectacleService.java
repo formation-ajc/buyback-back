@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.projet.buyback.model.spectacle.Spectacle;
 import com.projet.buyback.repository.spectacle.SpectacleRepository;
 import com.projet.buyback.schema.request.jwt.SpectacleDtoResponse;
+import com.projet.buyback.schema.request.jwt.SportDtoResponse;
 
 @Service
 public class SpectacleService {
@@ -50,15 +51,16 @@ public class SpectacleService {
 			spectacleDtoResponse.setEmail(spectacleTicket.getForsaleUserId().getEmail());
 			spectacleDtoResponse.setFirstName(spectacleTicket.getForsaleUserId().getFirstname());
 			spectacleDtoResponse.setLastName(spectacleTicket.getForsaleUserId().getLastname());
+		
 			return spectacleDtoResponse;
-		}else {
+		} else {
 			return null;
 		}
 	}
 
 	public SpectacleDtoResponse createSpectacleTicket(Spectacle spectacleTicket) {
 		Spectacle savedSpectacle = spectacleRepository.save(spectacleTicket);
-		if(savedSpectacle != null) {			
+		if (savedSpectacle != null) {
 			SpectacleDtoResponse spectacleDtoResponse = new SpectacleDtoResponse();
 			spectacleDtoResponse.setId(savedSpectacle.getId());
 			spectacleDtoResponse.setName(savedSpectacle.getName());
@@ -72,7 +74,7 @@ public class SpectacleService {
 			spectacleDtoResponse.setFirstName(savedSpectacle.getForsaleUserId().getFirstname());
 			spectacleDtoResponse.setLastName(savedSpectacle.getForsaleUserId().getLastname());
 			return spectacleDtoResponse;
-		}else {
+		} else {
 			return null;
 		}
 	}

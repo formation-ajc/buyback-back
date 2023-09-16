@@ -23,6 +23,11 @@ public class SpectacleDtoResponse {
 		super();
 	}
 
+	
+
+	public Long getId() {
+		return id;
+	}
 
 	public SpectacleDtoResponse(Long id, String name, Double price, LocalDate startDate, LocalDate endDate,
 			Address address, SpectacleCategory category, Long userId, String email, String firstName, String lastName) {
@@ -41,10 +46,6 @@ public class SpectacleDtoResponse {
 	}
 
 
-
-	public Long getId() {
-		return id;
-	}
 
 	public void setId(Long id) {
 		this.id = id;
@@ -106,7 +107,6 @@ public class SpectacleDtoResponse {
 		this.userId = userId;
 	}
 
-
 	public String getEmail() {
 		return email;
 	}
@@ -114,7 +114,6 @@ public class SpectacleDtoResponse {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
 
 	public String getFirstName() {
 		return firstName;
@@ -124,16 +123,13 @@ public class SpectacleDtoResponse {
 		this.firstName = firstName;
 	}
 
-
 	public String getLastName() {
 		return lastName;
 	}
 
-
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-
 
 	@Override
 	public String toString() {
@@ -142,5 +138,6 @@ public class SpectacleDtoResponse {
 				+ ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + "]";
 	}
 
+	
 
 }

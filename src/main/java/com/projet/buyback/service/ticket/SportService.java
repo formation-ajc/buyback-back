@@ -24,7 +24,8 @@ public class SportService {
 			for (Sport sport : sportTickets) {
 				sportTicketsDto.add(new SportDtoResponse(sport.getId(), sport.getName(), sport.getPrice(),
 						sport.getStartDate(), sport.getEndDate(), sport.getAddress(), sport.getSportCategory(),
-						sport.getForsaleUserId().getId(), sport.getForsaleUserId().getEmail(), sport.getForsaleUserId().getFirstname(), sport.getForsaleUserId().getLastname()));
+						sport.getForsaleUserId().getId(), sport.getForsaleUserId().getEmail(),
+						sport.getForsaleUserId().getFirstname(), sport.getForsaleUserId().getLastname()));
 			}
 			return sportTicketsDto;
 		} else {
@@ -34,21 +35,21 @@ public class SportService {
 
 	public SportDtoResponse getSportTicketById(Long id) {
 		Optional<Sport> optSportTicket = sportRepository.findById(id);
-		SportDtoResponse sportDtoresponse = new SportDtoResponse();
+		SportDtoResponse sportDtoResponse = new SportDtoResponse();
 		if (optSportTicket.isPresent()) {
 			Sport sportTicket = optSportTicket.get();
-			sportDtoresponse.setId(sportTicket.getId());
-			sportDtoresponse.setName(sportTicket.getName());
-			sportDtoresponse.setPrice(sportTicket.getPrice());
-			sportDtoresponse.setStartDate(sportTicket.getStartDate());
-			sportDtoresponse.setEndDate(sportTicket.getEndDate());
-			sportDtoresponse.setAddress(sportTicket.getAddress());
-			sportDtoresponse.setCategory(sportTicket.getSportCategory());
-			sportDtoresponse.setUserId(sportTicket.getForsaleUserId().getId());
-			sportDtoresponse.setEmail(sportTicket.getForsaleUserId().getEmail());
-			sportDtoresponse.setFirstName(sportTicket.getForsaleUserId().getFirstname());
-			sportDtoresponse.setLastName(sportTicket.getForsaleUserId().getLastname());
-			return sportDtoresponse;
+			sportDtoResponse.setId(sportTicket.getId());
+			sportDtoResponse.setName(sportTicket.getName());
+			sportDtoResponse.setPrice(sportTicket.getPrice());
+			sportDtoResponse.setStartDate(sportTicket.getStartDate());
+			sportDtoResponse.setEndDate(sportTicket.getEndDate());
+			sportDtoResponse.setAddress(sportTicket.getAddress());
+			sportDtoResponse.setCategory(sportTicket.getSportCategory());
+			sportDtoResponse.setUserId(sportTicket.getForsaleUserId().getId());
+			sportDtoResponse.setEmail(sportTicket.getForsaleUserId().getEmail());
+			sportDtoResponse.setFirstName(sportTicket.getForsaleUserId().getFirstname());
+			sportDtoResponse.setLastName(sportTicket.getForsaleUserId().getLastname());
+			return sportDtoResponse;
 		} else {
 			return null;
 		}
@@ -56,7 +57,7 @@ public class SportService {
 
 	public SportDtoResponse createSportTicket(Sport sportTicket) {
 		Sport savedSport = sportRepository.save(sportTicket);
-		if(savedSport != null) {			
+		if (savedSport != null) {
 			SportDtoResponse sportDtoResponse = new SportDtoResponse();
 			sportDtoResponse.setId(savedSport.getId());
 			sportDtoResponse.setName(savedSport.getName());
@@ -70,7 +71,7 @@ public class SportService {
 			sportDtoResponse.setFirstName(savedSport.getForsaleUserId().getFirstname());
 			sportDtoResponse.setLastName(savedSport.getForsaleUserId().getLastname());
 			return sportDtoResponse;
-		}else {
+		} else {
 			return null;
 		}
 	}

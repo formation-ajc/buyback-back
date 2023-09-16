@@ -78,17 +78,17 @@ public class SpectacleController {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 						.body(new MessageResponse("The price cannot be empty !"));
 			}
-			if (spectacleReq.getStartDate() != null) {
+			if (spectacleReq.getStartDate() != null && spectacleReq.getEndDate() != null) {
+				if(spectacleReq.getStartDate().compareTo(spectacleReq.getEndDate()) > 0){
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+							.body(new MessageResponse("The start date cannot be after the end date !"));
+				}
 				newSpectacleTicket.setStartDate(spectacleReq.getStartDate());
-			} else {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-						.body(new MessageResponse("The start date cannot be empty !"));
-			}
-			if (spectacleReq.getEndDate() != null) {
 				newSpectacleTicket.setEndDate(spectacleReq.getEndDate());
+
 			} else {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-						.body(new MessageResponse("The end date cannot be empty !"));
+						.body(new MessageResponse("The start date and the end date cannot be empty !"));
 			}
 			Address address = new Address();
 			if (spectacleReq.getAddressName() != null && !spectacleReq.getAddressName().isEmpty()) {
@@ -98,7 +98,7 @@ public class SpectacleController {
 						.body(new MessageResponse("The address name cannot be empty !"));
 			}
 			if (spectacleReq.getAddressZipcode() != null && !spectacleReq.getAddressZipcode().isEmpty()) {
-				address.setName(spectacleReq.getAddressZipcode());
+				address.setZipcode(spectacleReq.getAddressZipcode());
 			} else {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 						.body(new MessageResponse("The address zipcode cannot be empty !"));
@@ -129,6 +129,7 @@ public class SpectacleController {
 			return ResponseEntity.status(HttpStatus.CREATED)
 					.body(new MessageResponse("Ticket registered successfully !"));
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			return ResponseEntity.internalServerError()
 					.body(new MessageResponse("Problem encountred during creation !"));
 		}
@@ -156,17 +157,17 @@ public class SpectacleController {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 						.body(new MessageResponse("The price cannot be empty !"));
 			}
-			if (spectacleReq.getStartDate() != null) {
+			if (spectacleReq.getStartDate() != null && spectacleReq.getEndDate() != null) {
+				if(spectacleReq.getStartDate().compareTo(spectacleReq.getEndDate()) > 0){
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+							.body(new MessageResponse("The start date cannot be after the end date !"));
+				}
 				updatedSpectacleTicket.setStartDate(spectacleReq.getStartDate());
-			} else {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-						.body(new MessageResponse("The start date cannot be empty !"));
-			}
-			if (spectacleReq.getEndDate() != null) {
 				updatedSpectacleTicket.setEndDate(spectacleReq.getEndDate());
+
 			} else {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-						.body(new MessageResponse("The end date cannot be empty !"));
+						.body(new MessageResponse("The start date and the end date cannot be empty !"));
 			}
 			Address address = new Address();
 			if (spectacleReq.getAddressName() != null && !spectacleReq.getAddressName().isEmpty()) {
@@ -205,7 +206,7 @@ public class SpectacleController {
 			}
 			spectacleService.createSpectacleTicket(updatedSpectacleTicket);
 			return ResponseEntity.status(HttpStatus.CREATED)
-					.body(spectacleService.createSpectacleTicket(updatedSpectacleTicket));
+					.body(new MessageResponse("Ticket updated successfully !"));
 		} catch (Exception e) {
 			// TODO: handle exception
 			return ResponseEntity.internalServerError().body(new MessageResponse("Problem encoured during updating !"));

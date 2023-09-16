@@ -40,7 +40,7 @@ public class Spectacle {
 	@JoinColumn(name = "forsale_user_id")
 	private User forsaleUserId;
 	@ManyToOne
-	@JoinColumn(name = "purshased_user_id")
+	@JoinColumn(name = "purshased_user_id", nullable = true)
 	private User purshasedUserId;
 
 	public Spectacle() {
