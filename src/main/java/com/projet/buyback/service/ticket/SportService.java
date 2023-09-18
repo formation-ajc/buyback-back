@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.projet.buyback.model.User;
 import com.projet.buyback.model.sport.Sport;
 import com.projet.buyback.repository.sport.SportRepository;
 import com.projet.buyback.schema.request.jwt.SportDtoResponse;
@@ -22,10 +23,15 @@ public class SportService {
 		if (!sportTickets.isEmpty()) {
 			List<SportDtoResponse> sportTicketsDto = new ArrayList<>();
 			for (Sport sport : sportTickets) {
+				String purshaseUserEmail = null;
+				if (sport.getPurshaseUserId() != null) {
+					purshaseUserEmail = sport.getForsaleUserId().getEmail();
+				}
 				sportTicketsDto.add(new SportDtoResponse(sport.getId(), sport.getName(), sport.getPrice(),
 						sport.getStartDate(), sport.getEndDate(), sport.getAddress(), sport.getSportCategory(),
 						sport.getForsaleUserId().getId(), sport.getForsaleUserId().getEmail(),
-						sport.getForsaleUserId().getFirstname(), sport.getForsaleUserId().getLastname()));
+						sport.getForsaleUserId().getFirstname(), sport.getForsaleUserId().getLastname(),
+						purshaseUserEmail));
 			}
 			return sportTicketsDto;
 		} else {
@@ -49,6 +55,9 @@ public class SportService {
 			sportDtoResponse.setEmail(sportTicket.getForsaleUserId().getEmail());
 			sportDtoResponse.setFirstName(sportTicket.getForsaleUserId().getFirstname());
 			sportDtoResponse.setLastName(sportTicket.getForsaleUserId().getLastname());
+			if (sportTicket.getPurshaseUserId() != null) {
+				sportDtoResponse.setPurchaseUserEmail(sportTicket.getPurshaseUserId().getEmail());
+			}
 			return sportDtoResponse;
 		} else {
 			return null;
@@ -70,6 +79,9 @@ public class SportService {
 			sportDtoResponse.setEmail(savedSport.getForsaleUserId().getEmail());
 			sportDtoResponse.setFirstName(savedSport.getForsaleUserId().getFirstname());
 			sportDtoResponse.setLastName(savedSport.getForsaleUserId().getLastname());
+			if (savedSport.getPurshaseUserId() != null) {
+				sportDtoResponse.setPurchaseUserEmail(savedSport.getPurshaseUserId().getEmail());
+			}
 			return sportDtoResponse;
 		} else {
 			return null;

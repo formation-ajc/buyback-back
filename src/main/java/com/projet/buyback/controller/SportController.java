@@ -78,7 +78,7 @@ public class SportController {
 						.body(new MessageResponse("The price cannot be empty !"));
 			}
 			if (sportReq.getStartDate() != null && sportReq.getEndDate() != null) {
-				if(sportReq.getStartDate().compareTo(sportReq.getEndDate()) > 0){
+				if (sportReq.getStartDate().compareTo(sportReq.getEndDate()) > 0) {
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 							.body(new MessageResponse("The start date cannot be after the end date !"));
 				}
@@ -109,7 +109,7 @@ public class SportController {
 						.body(new MessageResponse("The address zipcode cannot be empty !"));
 			}
 			newSportTicket.setAddress(address);
-			
+
 			System.out.println();
 			if (sportReq.getSportcategoryId() != null) {
 				Optional<SportCategory> optSportCategory = sportCategoryService
@@ -119,11 +119,11 @@ public class SportController {
 					newSportTicket.setSportCategory(sportCategory);
 				} else {
 					return ResponseEntity.status(HttpStatus.NOT_FOUND)
-							.body(new MessageResponse("Category not found !")); 
+							.body(new MessageResponse("Category not found !"));
 				}
 			} else {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-						.body(new MessageResponse("The category cannot be empty !")); 
+						.body(new MessageResponse("The category cannot be empty !"));
 			}
 			if (sportReq.getUserEmail() != null) {
 				Optional<User> optUser = userRepository.findByEmail(sportReq.getUserEmail());
@@ -168,7 +168,7 @@ public class SportController {
 						.body(new MessageResponse("The price cannot be empty !"));
 			}
 			if (sportReq.getStartDate() != null && sportReq.getEndDate() != null) {
-				if(sportReq.getStartDate().compareTo(sportReq.getEndDate()) > 0){
+				if (sportReq.getStartDate().compareTo(sportReq.getEndDate()) > 0) {
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 							.body(new MessageResponse("The start date cannot be after the end date !"));
 				}

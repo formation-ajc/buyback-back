@@ -29,7 +29,7 @@ public class Sport {
 	private LocalDate startDate;
 	@Column(nullable = false)
 	private LocalDate endDate;
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
 	@JoinColumn(name = "address_id")
 	private Address address;
 	@ManyToOne

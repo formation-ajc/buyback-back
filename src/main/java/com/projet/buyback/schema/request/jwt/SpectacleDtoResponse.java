@@ -18,19 +18,19 @@ public class SpectacleDtoResponse {
 	private String email;
 	private String firstName;
 	private String lastName;
+	private String purchaseUserEmail;
 
 	public SpectacleDtoResponse() {
 		super();
 	}
-
-	
 
 	public Long getId() {
 		return id;
 	}
 
 	public SpectacleDtoResponse(Long id, String name, Double price, LocalDate startDate, LocalDate endDate,
-			Address address, SpectacleCategory category, Long userId, String email, String firstName, String lastName) {
+			Address address, SpectacleCategory category, Long userId, String email, String firstName, String lastName,
+			String purchaseUserEmail) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -43,9 +43,8 @@ public class SpectacleDtoResponse {
 		this.email = email;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.purchaseUserEmail = purchaseUserEmail;
 	}
-
-
 
 	public void setId(Long id) {
 		this.id = id;
@@ -131,13 +130,20 @@ public class SpectacleDtoResponse {
 		this.lastName = lastName;
 	}
 
+	public String getPurchaseUserEmail() {
+		return purchaseUserEmail;
+	}
+
+	public void setPurchaseUserEmail(String purchaseUserEmail) {
+		this.purchaseUserEmail = purchaseUserEmail;
+	}
+
 	@Override
 	public String toString() {
 		return "SpectacleDtoResponse [id=" + id + ", name=" + name + ", price=" + price + ", startDate=" + startDate
 				+ ", endDate=" + endDate + ", address=" + address + ", category=" + category + ", userId=" + userId
-				+ ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + "]";
+				+ ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + ", purchaseUserEmail="
+				+ purchaseUserEmail + "]";
 	}
-
-	
 
 }

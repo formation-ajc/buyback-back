@@ -25,9 +25,13 @@ public class SpectacleService {
 			List<SpectacleDtoResponse> spectacleTicketsDto = new ArrayList<>();
 			
 			for (Spectacle spectacle : spectacleTickets) {
+				String purshaseUserEmail = null;
+				if(spectacle.getPurshaseUserId() != null) {
+					purshaseUserEmail = spectacle.getForsaleUserId().getEmail();
+				}
 				spectacleTicketsDto.add(new SpectacleDtoResponse(spectacle.getId(), spectacle.getName(),
 						spectacle.getPrice(), spectacle.getStartDate(), spectacle.getEndDate(), spectacle.getAddress(),
-						spectacle.getSpectacleCategory(), spectacle.getForsaleUserId().getId(), spectacle.getForsaleUserId().getEmail(), spectacle.getForsaleUserId().getFirstname(), spectacle.getForsaleUserId().getLastname()));
+						spectacle.getSpectacleCategory(), spectacle.getForsaleUserId().getId(), spectacle.getForsaleUserId().getEmail(), spectacle.getForsaleUserId().getFirstname(), spectacle.getForsaleUserId().getLastname(), purshaseUserEmail));
 			}
 			return spectacleTicketsDto;
 		}else {
@@ -51,7 +55,9 @@ public class SpectacleService {
 			spectacleDtoResponse.setEmail(spectacleTicket.getForsaleUserId().getEmail());
 			spectacleDtoResponse.setFirstName(spectacleTicket.getForsaleUserId().getFirstname());
 			spectacleDtoResponse.setLastName(spectacleTicket.getForsaleUserId().getLastname());
-		
+			if(spectacleTicket.getPurshaseUserId() != null) {
+				spectacleDtoResponse.setPurchaseUserEmail(spectacleTicket.getPurshaseUserId().getEmail());
+			}
 			return spectacleDtoResponse;
 		} else {
 			return null;
@@ -73,6 +79,9 @@ public class SpectacleService {
 			spectacleDtoResponse.setEmail(savedSpectacle.getForsaleUserId().getEmail());
 			spectacleDtoResponse.setFirstName(savedSpectacle.getForsaleUserId().getFirstname());
 			spectacleDtoResponse.setLastName(savedSpectacle.getForsaleUserId().getLastname());
+			if(savedSpectacle.getPurshaseUserId() != null) {
+				spectacleDtoResponse.setPurchaseUserEmail(spectacleTicket.getPurshaseUserId().getEmail());
+			}
 			return spectacleDtoResponse;
 		} else {
 			return null;

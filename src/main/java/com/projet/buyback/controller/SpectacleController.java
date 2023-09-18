@@ -160,7 +160,7 @@ public class SpectacleController {
 			if (spectacleReq.getStartDate() != null && spectacleReq.getEndDate() != null) {
 				if(spectacleReq.getStartDate().compareTo(spectacleReq.getEndDate()) > 0){
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-							.body(new MessageResponse("The start date cannot be after the end date !"));
+							.body(new MessageResponse("The start date cannot be after the end date !")); 
 				}
 				updatedSpectacleTicket.setStartDate(spectacleReq.getStartDate());
 				updatedSpectacleTicket.setEndDate(spectacleReq.getEndDate());
