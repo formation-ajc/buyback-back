@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.projet.buyback.model.Address;
@@ -23,9 +25,11 @@ import com.projet.buyback.repository.spectacle.SpectacleRepository;
 import com.projet.buyback.repository.UserRepository;
 import com.projet.buyback.schema.request.jwt.SpectacleDtoResponse;
 import com.projet.buyback.schema.request.jwt.SpectacleRequest;
+import com.projet.buyback.schema.request.jwt.SportDtoResponse;
 import com.projet.buyback.schema.response.security.MessageResponse;
 import com.projet.buyback.service.ticket.SpectacleCategoryService;
 import com.projet.buyback.service.ticket.SpectacleService;
+import com.projet.buyback.utils.security.JwtUtils;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -40,12 +44,28 @@ public class SpectacleController {
 	private SpectacleRepository spectacleRepository;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	JwtUtils jwtUtils;
 
 	@GetMapping("/spectacles")
 	public ResponseEntity<?> getAllSpectacleTickets() {
 		List<SpectacleDtoResponse> spectacleTickets = spectacleService.getAllSpectacleTickets();
 		if (spectacleTickets != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(spectacleTickets);
+		} else {
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new MessageResponse("Result is empty !"));
+		}
+	}
+
+	@GetMapping("/spectaclesByForsaleUser")
+	public ResponseEntity<?> getAllSpectacleTicketsByForsaleUser(
+			@RequestHeader(HttpHeaders.AUTHORIZATION) String headerAuth) {
+		String actualEmail = jwtUtils.getEmailFromJwtToken(headerAuth.split(" ")[1]);
+		User user = userRepository.findByEmail(actualEmail).get();
+		List<SpectacleDtoResponse> spectacleTicketsByForsaleUser = spectacleService
+				.getAllSpectacleTicketsByForsaleUser(user);
+		if (!spectacleTicketsByForsaleUser.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.OK).body(spectacleTicketsByForsaleUser);
 		} else {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new MessageResponse("Result is empty !"));
 		}
@@ -79,7 +99,7 @@ public class SpectacleController {
 						.body(new MessageResponse("The price cannot be empty !"));
 			}
 			if (spectacleReq.getStartDate() != null && spectacleReq.getEndDate() != null) {
-				if(spectacleReq.getStartDate().compareTo(spectacleReq.getEndDate()) > 0){
+				if (spectacleReq.getStartDate().compareTo(spectacleReq.getEndDate()) > 0) {
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 							.body(new MessageResponse("The start date cannot be after the end date !"));
 				}
@@ -158,9 +178,9 @@ public class SpectacleController {
 						.body(new MessageResponse("The price cannot be empty !"));
 			}
 			if (spectacleReq.getStartDate() != null && spectacleReq.getEndDate() != null) {
-				if(spectacleReq.getStartDate().compareTo(spectacleReq.getEndDate()) > 0){
+				if (spectacleReq.getStartDate().compareTo(spectacleReq.getEndDate()) > 0) {
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-							.body(new MessageResponse("The start date cannot be after the end date !")); 
+							.body(new MessageResponse("The start date cannot be after the end date !"));
 				}
 				updatedSpectacleTicket.setStartDate(spectacleReq.getStartDate());
 				updatedSpectacleTicket.setEndDate(spectacleReq.getEndDate());
@@ -205,8 +225,7 @@ public class SpectacleController {
 				}
 			}
 			spectacleService.createSpectacleTicket(updatedSpectacleTicket);
-			return ResponseEntity.status(HttpStatus.CREATED)
-					.body(new MessageResponse("Ticket updated successfully !"));
+			return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse("Ticket updated successfully !"));
 		} catch (Exception e) {
 			// TODO: handle exception
 			return ResponseEntity.internalServerError().body(new MessageResponse("Problem encoured during updating !"));

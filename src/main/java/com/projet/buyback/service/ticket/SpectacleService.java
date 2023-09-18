@@ -7,7 +7,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.projet.buyback.model.User;
 import com.projet.buyback.model.spectacle.Spectacle;
+import com.projet.buyback.model.sport.Sport;
 import com.projet.buyback.repository.spectacle.SpectacleRepository;
 import com.projet.buyback.schema.request.jwt.SpectacleDtoResponse;
 import com.projet.buyback.schema.request.jwt.SportDtoResponse;
@@ -35,6 +37,27 @@ public class SpectacleService {
 			}
 			return spectacleTicketsDto;
 		}else {
+			return null;
+		}
+	}
+	
+	public List<SpectacleDtoResponse> getAllSpectacleTicketsByForsaleUser(User user) {
+		List<Spectacle> spectacleTicketsByForsaleUser = spectacleRepository.findByForsaleUserId(user);
+		if (!spectacleTicketsByForsaleUser.isEmpty()) {
+			List<SpectacleDtoResponse> spectacleTicketsDto = new ArrayList<>();
+			for (Spectacle spectacle : spectacleTicketsByForsaleUser) {
+				String purshaseUserEmail = null;
+				if (spectacle.getPurshaseUserId() != null) {
+					purshaseUserEmail = spectacle.getForsaleUserId().getEmail();
+				}
+				spectacleTicketsDto.add(new SpectacleDtoResponse(spectacle.getId(), spectacle.getName(), spectacle.getPrice(),
+						spectacle.getStartDate(), spectacle.getEndDate(), spectacle.getAddress(), spectacle.getSpectacleCategory(),
+						spectacle.getForsaleUserId().getId(), spectacle.getForsaleUserId().getEmail(),
+						spectacle.getForsaleUserId().getFirstname(), spectacle.getForsaleUserId().getLastname(),
+						purshaseUserEmail));
+			}
+			return spectacleTicketsDto;
+		} else {
 			return null;
 		}
 	}

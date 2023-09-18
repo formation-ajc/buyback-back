@@ -38,6 +38,27 @@ public class SportService {
 			return null;
 		}
 	}
+	
+	public List<SportDtoResponse> getAllSportTicketsByForsaleUser(User user) {
+		List<Sport> sportTicketsByForsaleUser = sportRepository.findByForsaleUserId(user);
+		if (!sportTicketsByForsaleUser.isEmpty()) {
+			List<SportDtoResponse> sportTicketsDto = new ArrayList<>();
+			for (Sport sport : sportTicketsByForsaleUser) {
+				String purshaseUserEmail = null;
+				if (sport.getPurshaseUserId() != null) {
+					purshaseUserEmail = sport.getForsaleUserId().getEmail();
+				}
+				sportTicketsDto.add(new SportDtoResponse(sport.getId(), sport.getName(), sport.getPrice(),
+						sport.getStartDate(), sport.getEndDate(), sport.getAddress(), sport.getSportCategory(),
+						sport.getForsaleUserId().getId(), sport.getForsaleUserId().getEmail(),
+						sport.getForsaleUserId().getFirstname(), sport.getForsaleUserId().getLastname(),
+						purshaseUserEmail));
+			}
+			return sportTicketsDto;
+		} else {
+			return null;
+		}
+	}
 
 	public SportDtoResponse getSportTicketById(Long id) {
 		Optional<Sport> optSportTicket = sportRepository.findById(id);

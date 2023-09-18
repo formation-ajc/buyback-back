@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.projet.buyback.model.Address;
@@ -26,6 +28,7 @@ import com.projet.buyback.schema.request.jwt.SportRequest;
 import com.projet.buyback.schema.response.security.MessageResponse;
 import com.projet.buyback.service.ticket.SportCategoryService;
 import com.projet.buyback.service.ticket.SportService;
+import com.projet.buyback.utils.security.JwtUtils;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -40,12 +43,27 @@ public class SportController {
 	private UserRepository userRepository;
 	@Autowired
 	private SportRepository sportRepository;
+	@Autowired
+	JwtUtils jwtUtils;
 
 	@GetMapping("/sports")
-	public ResponseEntity<?> getAllSportTickets() {
+	public ResponseEntity<?> getAllSportTickets() { 
 		List<SportDtoResponse> sportTickets = sportService.getAllSportTickets();
 		if (sportTickets != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(sportTickets);
+		} else {
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new MessageResponse("Result is empty !"));
+		}
+	}
+
+	@GetMapping("/sportsByForsaleUser")
+	public ResponseEntity<?> getAllSportTicketsByForsaleUser(
+			@RequestHeader(HttpHeaders.AUTHORIZATION) String headerAuth) {
+		String actualEmail = jwtUtils.getEmailFromJwtToken(headerAuth.split(" ")[1]);
+		User user = userRepository.findByEmail(actualEmail).get();
+		List<SportDtoResponse> sportTicketsByForsaleUser = sportService.getAllSportTicketsByForsaleUser(user);
+		if (!sportTicketsByForsaleUser.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.OK).body(sportTicketsByForsaleUser);
 		} else {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new MessageResponse("Result is empty !"));
 		}
