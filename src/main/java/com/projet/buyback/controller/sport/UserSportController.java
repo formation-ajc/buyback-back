@@ -44,28 +44,7 @@ public class UserSportController {
 
                 List<SportResponse> sportResponses = new ArrayList<>();
                 for (Sport sport: sportRepository.findByPurchaser(user)) {
-                    SportResponse sportResponse = new SportResponse(
-                        sport.getId(),
-                        sport.getName(),
-                        sport.getPrice(),
-                        sport.getStartDate(),
-                        sport.getEndDate(),
-                        sport.getAddress(),
-                        sport.getSportCategory(),
-                        new UserPublicResponse(
-                            sport.getSeller().getId(),
-                            sport.getSeller().getFirstname(),
-                            sport.getSeller().getLastname(),
-                            sport.getSeller().getEmail()
-                        ),
-                        new UserPublicResponse(
-                            sport.getPurchaser().getId(),
-                            sport.getPurchaser().getFirstname(),
-                            sport.getPurchaser().getLastname(),
-                            sport.getPurchaser().getEmail()
-                        )
-                    );
-                    sportResponses.add(sportResponse);
+                    sportResponses.add(SportResponse.createSportResponse(sport));
                 }
 
                 return ResponseEntity.ok(

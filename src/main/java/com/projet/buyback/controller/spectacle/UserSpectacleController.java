@@ -45,28 +45,7 @@ public class UserSpectacleController {
 
                 List<SpectacleResponse> spectacleResponses = new ArrayList<>();
                 for (Spectacle spectacle: spectacleRepository.findByPurchaser(user)) {
-                    SpectacleResponse spectacleResponse = new SpectacleResponse(
-                        spectacle.getId(),
-                        spectacle.getName(),
-                        spectacle.getPrice(),
-                        spectacle.getStartDate(),
-                        spectacle.getEndDate(),
-                        spectacle.getAddress(),
-                        spectacle.getSpectacleCategory(),
-                        new UserPublicResponse(
-                            spectacle.getSeller().getId(),
-                            spectacle.getSeller().getFirstname(),
-                            spectacle.getSeller().getLastname(),
-                            spectacle.getSeller().getEmail()
-                        ),
-                        new UserPublicResponse(
-                            spectacle.getPurchaser().getId(),
-                            spectacle.getPurchaser().getFirstname(),
-                            spectacle.getPurchaser().getLastname(),
-                            spectacle.getPurchaser().getEmail()
-                        )
-                    );
-                    spectacleResponses.add(spectacleResponse);
+                    spectacleResponses.add(SpectacleResponse.createSpectacleResponse(spectacle));
                 }
 
                 return ResponseEntity.ok(
