@@ -10,6 +10,8 @@ import com.projet.buyback.model.User;
 
 @Repository
 public interface SpectacleRepository extends JpaRepository<Spectacle, Long> {
-
 	List<Spectacle> findByForsaleUserId(User user);
+
+//	List<Spectacle> findByPurchasedUserId(User user);
+
 }
