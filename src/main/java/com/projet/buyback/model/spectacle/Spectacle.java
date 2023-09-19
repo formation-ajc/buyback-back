@@ -31,17 +31,17 @@ public class Spectacle {
 	@Column(nullable = false)
 	private LocalDate endDate;
 	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
-	@JoinColumn(name = "address_id")
+	@JoinColumn(name = "address_id" , referencedColumnName = "id")
 	private Address address;
 	@ManyToOne
-	@JoinColumn(name = "spectacleCategory_id")
+	@JoinColumn(name = "spectacle_category_id", referencedColumnName = "id")
 	private SpectacleCategory spectacleCategory;
 	@ManyToOne
-	@JoinColumn(name = "forsale_user_id")
-	private User forsaleUserId;
+	@JoinColumn(name = "seller_id", referencedColumnName = "id")
+	private User seller;
 	@ManyToOne
-	@JoinColumn(name = "purshase_user_id")
-	private User purshaseUserId;
+	@JoinColumn(name = "purchaser_id", referencedColumnName = "id")
+	private User purchaser;
 
 	public Spectacle() {
 		super();
@@ -111,27 +111,27 @@ public class Spectacle {
 		this.spectacleCategory = spectacleCategory;
 	}
 
-	public User getForsaleUserId() {
-		return forsaleUserId;
+	public User getSeller() {
+		return seller;
 	}
 
-	public void setForsaleUserId(User forsaleUserId) {
-		this.forsaleUserId = forsaleUserId;
+	public void setSeller(User seller) {
+		this.seller = seller;
 	}
 
-	public User getPurshaseUserId() {
-		return purshaseUserId;
+	public User getPurchaser() {
+		return purchaser;
 	}
 
-	public void setPurshaseUserId(User purshaseUserId) {
-		this.purshaseUserId = purshaseUserId;
+	public void setPurchaser(User purchaser) {
+		this.purchaser = purchaser;
 	}
 
 	@Override
 	public String toString() {
 		return "Spectacle [id=" + id + ", name=" + name + ", price=" + price + ", startDate=" + startDate + ", endDate="
-				+ endDate + ", address=" + address + ", spectacleCategory=" + spectacleCategory + ", forsaleUserId="
-				+ forsaleUserId + ", purshaseUserId=" + purshaseUserId + "]";
+				+ endDate + ", address=" + address + ", spectacleCategory=" + spectacleCategory + ", seller="
+				+ seller + ", purchaser=" + purchaser + "]";
 	}
 
 }

@@ -13,48 +13,40 @@ import jakarta.persistence.Table;
 @Table(name = "sport_category")
 public class SportCategory {
 	
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column(nullable = false, unique = true)
 	private String name;
-	
-	
+
 	public SportCategory() {
 		super();
 	}
-
 
 	public SportCategory(String name) {
 		super();
 		this.name = name;
 	}
 
-
 	public Long getId() {
 		return id;
 	}
-
 
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-
 	public String getName() {
 		return name;
 	}
-
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-
-
 	@Override
 	public String toString() {
 		return "SportCategory [id=" + id + ", name=" + name + "]";
 	}
-	
-	
+
 }

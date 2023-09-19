@@ -6,6 +6,13 @@ public class UserPublicResponse {
     private String lastname;
     private String email;
 
+    public UserPublicResponse(Long id, String firstname, String lastname, String email) {
+        this.id = id;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+    }
+
     public Long getId() {
         return id;
     }

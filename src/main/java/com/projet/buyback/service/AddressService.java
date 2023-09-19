@@ -1,4 +1,4 @@
-package com.projet.buyback.service.ticket;
+package com.projet.buyback.service;
 
 import java.util.List;
 import java.util.Optional;

@@ -2,12 +2,13 @@ INSERT IGNORE INTO role (name) VALUES ('SUPER');
 INSERT IGNORE INTO role (name) VALUES ('ADMIN');
 INSERT IGNORE INTO role (name) VALUES ('USER');
 
-INSERT IGNORE INTO sport_category (name) VALUES ('Football');
+INSERT IGNORE INTO sport_category (name) VALUES ('Soccer');
 INSERT IGNORE INTO sport_category (name) VALUES ('Basketball');
 INSERT IGNORE INTO sport_category (name) VALUES ('Handball');
+INSERT IGNORE INTO sport_category (name) VALUES ('Rugby');
 
 INSERT IGNORE INTO spectacle_category (name) VALUES ('Concert');
-INSERT IGNORE INTO spectacle_category (name) VALUES ('Theatre');
+INSERT IGNORE INTO spectacle_category (name) VALUES ('Theater');
 INSERT IGNORE INTO spectacle_category (name) VALUES ('Festival');
 
 INSERT IGNORE INTO user

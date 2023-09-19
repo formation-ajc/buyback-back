@@ -1,11 +1,12 @@
-package com.projet.buyback.controller;
+package com.projet.buyback.controller.sport;
 
 import com.projet.buyback.model.User;
 import com.projet.buyback.model.sport.Sport;
 import com.projet.buyback.repository.UserRepository;
 import com.projet.buyback.repository.sport.SportRepository;
 import com.projet.buyback.schema.response.security.MessageResponse;
-import com.projet.buyback.schema.response.user.UserSportTicketResponse;
+import com.projet.buyback.schema.response.sport.SportResponse;
+import com.projet.buyback.schema.response.user.UserPublicResponse;
 import com.projet.buyback.service.user.UserService;
 import com.projet.buyback.utils.security.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,8 @@ import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("${api.baseURL}/user/tickets")
-public class UserTicketController {
+@RequestMapping("${api.baseURL}/user/tickets/sport")
+public class UserSportController {
 
     @Autowired
     UserRepository userRepository;
@@ -34,21 +35,41 @@ public class UserTicketController {
     @Autowired
     private SportRepository sportRepository;
 
-    @GetMapping("/sport/purchased")
+    @GetMapping("/purchased")
     public ResponseEntity<?> getPurchasedTicket(@RequestHeader(HttpHeaders.AUTHORIZATION) String headerAuth) {
         try {
             String email = jwtUtils.getEmailFromJwtToken(headerAuth.split(" ")[1]);
             if (userRepository.findByEmail(email).isPresent()) {
                 User user = userRepository.findByEmail(email).get();
 
-                List<UserSportTicketResponse> sportTicketResponses = new ArrayList<>();
-                for (Sport sportTicket: sportRepository.findBypurshaseUserId(user)) {
-                    UserSportTicketResponse userSportTicketResponse = UserSportTicketResponse.getUserSportTicketResponse(sportTicket);
-                    sportTicketResponses.add(userSportTicketResponse);
+                List<SportResponse> sportResponses = new ArrayList<>();
+                for (Sport sport: sportRepository.findByPurchaser(user)) {
+                    SportResponse sportResponse = new SportResponse(
+                        sport.getId(),
+                        sport.getName(),
+                        sport.getPrice(),
+                        sport.getStartDate(),
+                        sport.getEndDate(),
+                        sport.getAddress(),
+                        sport.getSportCategory(),
+                        new UserPublicResponse(
+                            sport.getSeller().getId(),
+                            sport.getSeller().getFirstname(),
+                            sport.getSeller().getLastname(),
+                            sport.getSeller().getEmail()
+                        ),
+                        new UserPublicResponse(
+                            sport.getPurchaser().getId(),
+                            sport.getPurchaser().getFirstname(),
+                            sport.getPurchaser().getLastname(),
+                            sport.getPurchaser().getEmail()
+                        )
+                    );
+                    sportResponses.add(sportResponse);
                 }
 
                 return ResponseEntity.ok(
-                    sportTicketResponses
+                    sportResponses
                 );
             }
         }
@@ -62,12 +83,12 @@ public class UserTicketController {
             .body(new MessageResponse("Error: Could not recuperate tickets!"));
     }
 
-    @GetMapping("/sport/for-sale")
+    @GetMapping("/for-sale")
     public ResponseEntity<?> getForSaleTicket(@RequestHeader(HttpHeaders.AUTHORIZATION) String headerAuth) {
         return ResponseEntity.ok(new MessageResponse("Password changed!"));
     }
 
-    @GetMapping("/sport/sold")
+    @GetMapping("/sold")
     public ResponseEntity<?> getSoldTicket(@RequestHeader(HttpHeaders.AUTHORIZATION) String headerAuth) {
         return ResponseEntity.ok(new MessageResponse("Password changed!"));
     }

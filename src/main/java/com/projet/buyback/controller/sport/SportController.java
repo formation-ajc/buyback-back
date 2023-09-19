@@ -1,10 +1,9 @@
-package com.projet.buyback.controller;
+package com.projet.buyback.controller.sport;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.projet.buyback.model.Address;
@@ -23,16 +21,16 @@ import com.projet.buyback.model.sport.SportCategory;
 import com.projet.buyback.model.User;
 import com.projet.buyback.repository.sport.SportRepository;
 import com.projet.buyback.repository.UserRepository;
-import com.projet.buyback.schema.request.jwt.SportDtoResponse;
-import com.projet.buyback.schema.request.jwt.SportRequest;
+import com.projet.buyback.schema.response.sport.SportResponse;
+import com.projet.buyback.schema.request.sport.SportRequest;
 import com.projet.buyback.schema.response.security.MessageResponse;
-import com.projet.buyback.service.ticket.SportCategoryService;
-import com.projet.buyback.service.ticket.SportService;
+import com.projet.buyback.service.sport.SportCategoryService;
+import com.projet.buyback.service.sport.SportService;
 import com.projet.buyback.utils.security.JwtUtils;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("${api.baseURL}")
+@RequestMapping("${api.baseURL}/sports")
 public class SportController {
 
 	@Autowired
@@ -46,9 +44,9 @@ public class SportController {
 	@Autowired
 	JwtUtils jwtUtils;
 
-	@GetMapping("/sports")
+	@GetMapping("")
 	public ResponseEntity<?> getAllSportTickets() { 
-		List<SportDtoResponse> sportTickets = sportService.getAllSportTickets();
+		List<SportResponse> sportTickets = sportService.getAllSportTickets();
 		if (sportTickets != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(sportTickets);
 		} else {
@@ -56,30 +54,17 @@ public class SportController {
 		}
 	}
 
-	@GetMapping("/sportsByForsaleUser")
-	public ResponseEntity<?> getAllSportTicketsByForsaleUser(
-			@RequestHeader(HttpHeaders.AUTHORIZATION) String headerAuth) {
-		String actualEmail = jwtUtils.getEmailFromJwtToken(headerAuth.split(" ")[1]);
-		User user = userRepository.findByEmail(actualEmail).get();
-		List<SportDtoResponse> sportTicketsByForsaleUser = sportService.getAllSportTicketsByForsaleUser(user);
-		if (!sportTicketsByForsaleUser.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.OK).body(sportTicketsByForsaleUser);
-		} else {
-			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new MessageResponse("Result is empty !"));
-		}
-	}
-
-	@GetMapping("/sports/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<?> getSportTicketById(@PathVariable("id") Long sportId) {
-		SportDtoResponse sportDtoResponse = sportService.getSportTicketById(sportId);
-		if (sportDtoResponse != null) {
-			return ResponseEntity.status(HttpStatus.OK).body(sportDtoResponse);
+		SportResponse sportResponse = sportService.getSportTicketById(sportId);
+		if (sportResponse != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(sportResponse);
 		} else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Ticket not found !"));
 		}
 	}
 
-	@PostMapping("/sports")
+	@PostMapping("")
 	public ResponseEntity<?> createSportTicket(@RequestBody SportRequest sportReq) {
 		try {
 			Sport newSportTicket = new Sport();
@@ -96,7 +81,7 @@ public class SportController {
 						.body(new MessageResponse("The price cannot be empty !"));
 			}
 			if (sportReq.getStartDate() != null && sportReq.getEndDate() != null) {
-				if (sportReq.getStartDate().compareTo(sportReq.getEndDate()) > 0) {
+				if (sportReq.getStartDate().isAfter(sportReq.getEndDate())) {
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 							.body(new MessageResponse("The start date cannot be after the end date !"));
 				}
@@ -128,10 +113,9 @@ public class SportController {
 			}
 			newSportTicket.setAddress(address);
 
-			System.out.println();
-			if (sportReq.getSportcategoryId() != null) {
+			if (sportReq.getSportCategoryId() != null) {
 				Optional<SportCategory> optSportCategory = sportCategoryService
-						.getSportCategoryById(sportReq.getSportcategoryId());
+						.getSportCategoryById(sportReq.getSportCategoryId());
 				if (optSportCategory.isPresent()) {
 					SportCategory sportCategory = optSportCategory.get();
 					newSportTicket.setSportCategory(sportCategory);
@@ -143,14 +127,15 @@ public class SportController {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 						.body(new MessageResponse("The category cannot be empty !"));
 			}
-			if (sportReq.getUserEmail() != null) {
-				Optional<User> optUser = userRepository.findByEmail(sportReq.getUserEmail());
+			if (sportReq.getSellerEmail() != null) {
+				Optional<User> optUser = userRepository.findByEmail(sportReq.getSellerEmail());
 				if (optUser.isPresent()) {
 					User user = optUser.get();
-					newSportTicket.setForsaleUserId(user);
+					newSportTicket.setSeller(user);
 				}
 			}
-			sportService.createSportTicket(newSportTicket);
+
+			SportResponse sportResponse = sportService.createSportTicket(newSportTicket);
 
 			return ResponseEntity.status(HttpStatus.CREATED)
 					.body(new MessageResponse("Ticket registered successfully !"));
@@ -163,7 +148,7 @@ public class SportController {
 
 	}
 
-	@PutMapping("/sports/{id}")
+	@PutMapping("/{id}")
 	public ResponseEntity<?> updateSportTicket(@PathVariable("id") Long idSportTicket,
 			@RequestBody SportRequest sportReq) {
 
@@ -186,7 +171,7 @@ public class SportController {
 						.body(new MessageResponse("The price cannot be empty !"));
 			}
 			if (sportReq.getStartDate() != null && sportReq.getEndDate() != null) {
-				if (sportReq.getStartDate().compareTo(sportReq.getEndDate()) > 0) {
+				if (sportReq.getStartDate().isAfter(sportReq.getEndDate())) {
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 							.body(new MessageResponse("The start date cannot be after the end date !"));
 				}
@@ -211,9 +196,9 @@ public class SportController {
 						.body(new MessageResponse("The address zipcode cannot be empty !"));
 			}
 			updatedSportTicket.setAddress(address);
-			if (sportReq.getSportcategoryId() != null && !sportReq.getAddressZipcode().isEmpty()) {
+			if (sportReq.getSportCategoryId() != null && !sportReq.getAddressZipcode().isEmpty()) {
 				Optional<SportCategory> optSportCategory = sportCategoryService
-						.getSportCategoryById(sportReq.getSportcategoryId());
+						.getSportCategoryById(sportReq.getSportCategoryId());
 				if (optSportCategory.isPresent()) {
 					SportCategory sportCategory = optSportCategory.get();
 					updatedSportTicket.setSportCategory(sportCategory);
@@ -226,11 +211,11 @@ public class SportController {
 						.body(new MessageResponse("Category cannot be empty !"));
 			}
 
-			if (sportReq.getUserEmail() != null) {
-				Optional<User> optUser = userRepository.findByEmail(sportReq.getUserEmail());
+			if (sportReq.getSellerEmail() != null) {
+				Optional<User> optUser = userRepository.findByEmail(sportReq.getSellerEmail());
 				if (optUser.isPresent()) {
 					User user = optUser.get();
-					updatedSportTicket.setForsaleUserId(user);
+					updatedSportTicket.setSeller(user);
 				}
 			}
 			sportService.createSportTicket(updatedSportTicket);
@@ -242,7 +227,7 @@ public class SportController {
 
 	}
 
-	@DeleteMapping("/sports/{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteSportTicketById(@PathVariable("id") Long idSportTicket) {
 		Optional<Sport> sport = sportRepository.findById(idSportTicket);
 		if (sport.isPresent()) {

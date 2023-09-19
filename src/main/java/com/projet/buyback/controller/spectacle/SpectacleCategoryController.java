@@ -1,4 +1,4 @@
-package com.projet.buyback.controller;
+package com.projet.buyback.controller.spectacle;
 
 import java.util.List;
 
@@ -11,18 +11,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projet.buyback.model.spectacle.SpectacleCategory;
-import com.projet.buyback.model.sport.SportCategory;
-import com.projet.buyback.service.ticket.SpectacleCategoryService;
-import com.projet.buyback.service.ticket.SportCategoryService;
+import com.projet.buyback.service.spectacle.SpectacleCategoryService;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("${api.baseURL}")
+@RequestMapping("${api.baseURL}/spectacle")
 public class SpectacleCategoryController {
 	@Autowired
 	private SpectacleCategoryService spectacleCategoryService;
 	
-	@GetMapping("/spectacleCategories")
+	@GetMapping("/categories")
 	public ResponseEntity<List<SpectacleCategory>> getAllSpectacleTickets() {
 		List<SpectacleCategory> spectacleCategories = spectacleCategoryService.getAllSpectacleCategories();
 		if (!spectacleCategories.isEmpty()) {

@@ -1,8 +1,8 @@
-package com.projet.buyback.schema.request.jwt;
+package com.projet.buyback.schema.request.sport;
 
 import java.time.LocalDate;
 
-public class SpectacleRequest {
+public class SportRequest {
 
 	private String name;
 	private Double price;
@@ -10,8 +10,8 @@ public class SpectacleRequest {
 	private LocalDate endDate;
 	private String addressName;
 	private String addressZipcode;
-	private Long spectaclecategoryId;
-	private String userEmail;
+	private Long sportCategoryId;
+	private String sellerEmail;
 
 	public String getName() {
 		return name;
@@ -61,27 +61,28 @@ public class SpectacleRequest {
 		this.addressZipcode = addressZipcode;
 	}
 
-	public Long getSpectaclecategoryId() {
-		return spectaclecategoryId;
+	public Long getSportCategoryId() {
+		return sportCategoryId;
 	}
 
-	public void setSpectaclecategoryId(Long spectaclecategoryId) {
-		this.spectaclecategoryId = spectaclecategoryId;
+	public void setSportCategoryId(Long sportCategoryId) {
+		this.sportCategoryId = sportCategoryId;
 	}
 
-	public String getUserEmail() {
-		return userEmail;
+	public String getSellerEmail() {
+		return sellerEmail;
 	}
 
-	public void setUserEmail(String userEmail) {
-		this.userEmail = userEmail;
+	public void setSellerEmail(String sellerEmail) {
+		this.sellerEmail = sellerEmail;
 	}
 
 	@Override
 	public String toString() {
-		return "SpectacleRequest [name=" + name + ", price=" + price + ", startDate=" + startDate + ", endDate="
-				+ endDate + ", addressName=" + addressName + ", addressZipcode=" + addressZipcode
-				+ ", spectaclecategoryId=" + spectaclecategoryId + ", userEmail=" + userEmail + "]";
+		return "SportRequest [name=" + name + ", price=" + price + ", startDate=" + startDate + ", endDate=" + endDate
+				+ ", addressName=" + addressName + ", addressZipcode=" + addressZipcode + ", sportcategoryId="
+				+ sportCategoryId + ", userEmail=" + sellerEmail + "]";
 	}
+
 
 }
