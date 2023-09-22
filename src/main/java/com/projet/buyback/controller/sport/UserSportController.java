@@ -64,11 +64,55 @@ public class UserSportController {
 
     @GetMapping("/for-sale")
     public ResponseEntity<?> getForSaleTicket(@RequestHeader(HttpHeaders.AUTHORIZATION) String headerAuth) {
-        return ResponseEntity.ok(new MessageResponse("Password changed!"));
+        try {
+            String email = jwtUtils.getEmailFromJwtToken(headerAuth.split(" ")[1]);
+            if (userRepository.findByEmail(email).isPresent()) {
+                User user = userRepository.findByEmail(email).get();
+
+                List<SportResponse> sportResponses = new ArrayList<>();
+                for (Sport sport: sportRepository.findBySellerAndPurchaserIsNull(user)) {
+                    sportResponses.add(SportResponse.createSportResponse(sport));
+                }
+
+                return ResponseEntity.ok(
+                    sportResponses
+                );
+            }
+        }
+        catch(Exception e) {
+            return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(new MessageResponse("Error: Could not recuperate tickets!"));
+        }
+        return ResponseEntity
+            .status(HttpStatus.FORBIDDEN)
+            .body(new MessageResponse("Error: Could not recuperate tickets!"));
     }
 
     @GetMapping("/sold")
     public ResponseEntity<?> getSoldTicket(@RequestHeader(HttpHeaders.AUTHORIZATION) String headerAuth) {
-        return ResponseEntity.ok(new MessageResponse("Password changed!"));
+        try {
+            String email = jwtUtils.getEmailFromJwtToken(headerAuth.split(" ")[1]);
+            if (userRepository.findByEmail(email).isPresent()) {
+                User user = userRepository.findByEmail(email).get();
+
+                List<SportResponse> sportResponses = new ArrayList<>();
+                for (Sport sport: sportRepository.findBySellerAndPurchaserIsNotNull(user)) {
+                    sportResponses.add(SportResponse.createSportResponse(sport));
+                }
+
+                return ResponseEntity.ok(
+                    sportResponses
+                );
+            }
+        }
+        catch(Exception e) {
+            return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(new MessageResponse("Error: Could not recuperate tickets!"));
+        }
+        return ResponseEntity
+            .status(HttpStatus.FORBIDDEN)
+            .body(new MessageResponse("Error: Could not recuperate tickets!"));
     }
 }

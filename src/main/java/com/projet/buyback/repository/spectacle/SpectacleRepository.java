@@ -10,7 +10,9 @@ import com.projet.buyback.model.User;
 
 @Repository
 public interface SpectacleRepository extends JpaRepository<Spectacle, Long> {
-	List<Spectacle> findBySeller(User user);
+
+	List<Spectacle> findBySellerAndPurchaserIsNotNull(User user);
+	List<Spectacle> findBySellerAndPurchaserIsNull(User user);
 	List<Spectacle> findByPurchaser(User user);
 
 }

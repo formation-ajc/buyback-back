@@ -11,7 +11,6 @@ public class SportRequest {
 	private String addressName;
 	private String addressZipcode;
 	private Long sportCategoryId;
-	private String sellerEmail;
 
 	public String getName() {
 		return name;
@@ -69,19 +68,11 @@ public class SportRequest {
 		this.sportCategoryId = sportCategoryId;
 	}
 
-	public String getSellerEmail() {
-		return sellerEmail;
-	}
-
-	public void setSellerEmail(String sellerEmail) {
-		this.sellerEmail = sellerEmail;
-	}
-
 	@Override
 	public String toString() {
 		return "SportRequest [name=" + name + ", price=" + price + ", startDate=" + startDate + ", endDate=" + endDate
 				+ ", addressName=" + addressName + ", addressZipcode=" + addressZipcode + ", sportcategoryId="
-				+ sportCategoryId + ", userEmail=" + sellerEmail + "]";
+				+ sportCategoryId + "]";
 	}
 
 

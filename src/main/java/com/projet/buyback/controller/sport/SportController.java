@@ -4,17 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.projet.buyback.model.Address;
 import com.projet.buyback.model.sport.Sport;
 import com.projet.buyback.model.sport.SportCategory;
@@ -65,7 +58,7 @@ public class SportController {
 	}
 
 	@PostMapping("")
-	public ResponseEntity<?> createSportTicket(@RequestBody SportRequest sportReq) {
+	public ResponseEntity<?> createSportTicket(@RequestHeader(HttpHeaders.AUTHORIZATION) String headerAuth, @RequestBody SportRequest sportReq) {
 		try {
 			Sport newSportTicket = new Sport();
 			if (sportReq.getName() != null && !sportReq.getName().isEmpty()) {
@@ -127,12 +120,11 @@ public class SportController {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 						.body(new MessageResponse("The category cannot be empty !"));
 			}
-			if (sportReq.getSellerEmail() != null) {
-				Optional<User> optUser = userRepository.findByEmail(sportReq.getSellerEmail());
-				if (optUser.isPresent()) {
-					User user = optUser.get();
-					newSportTicket.setSeller(user);
-				}
+
+			String email = jwtUtils.getEmailFromJwtToken(headerAuth.split(" ")[1]);
+			if (userRepository.findByEmail(email).isPresent()) {
+				User user = userRepository.findByEmail(email).get();
+				newSportTicket.setSeller(user);
 			}
 
 			SportResponse sportResponse = sportService.createSportTicket(newSportTicket);
@@ -149,8 +141,8 @@ public class SportController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updateSportTicket(@PathVariable("id") Long idSportTicket,
-			@RequestBody SportRequest sportReq) {
+	public ResponseEntity<?> updateSportTicket(@RequestHeader(HttpHeaders.AUTHORIZATION) String headerAuth, @PathVariable("id") Long idSportTicket,
+											   @RequestBody SportRequest sportReq) {
 
 		try {
 			Optional<Sport> sport = sportRepository.findById(idSportTicket);
@@ -211,13 +203,12 @@ public class SportController {
 						.body(new MessageResponse("Category cannot be empty !"));
 			}
 
-			if (sportReq.getSellerEmail() != null) {
-				Optional<User> optUser = userRepository.findByEmail(sportReq.getSellerEmail());
-				if (optUser.isPresent()) {
-					User user = optUser.get();
-					updatedSportTicket.setSeller(user);
-				}
+			String email = jwtUtils.getEmailFromJwtToken(headerAuth.split(" ")[1]);
+			if (userRepository.findByEmail(email).isPresent()) {
+				User user = userRepository.findByEmail(email).get();
+				updatedSportTicket.setSeller(user);
 			}
+
 			sportService.createSportTicket(updatedSportTicket);
 			return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse("Ticket updated successfully !"));
 		} catch (Exception e) {

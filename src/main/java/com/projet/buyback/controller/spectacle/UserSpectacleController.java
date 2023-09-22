@@ -56,20 +56,64 @@ public class UserSpectacleController {
         catch(Exception e) {
             return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
-                .body(new MessageResponse("Error: Could not recuperate tickets!"));
+                .body(new MessageResponse("Error: Could not recuperate purchased tickets!"));
         }
         return ResponseEntity
             .status(HttpStatus.FORBIDDEN)
-            .body(new MessageResponse("Error: Could not recuperate tickets!"));
+            .body(new MessageResponse("Error: Could not recuperate purchased tickets!"));
     }
 
     @GetMapping("/for-sale")
     public ResponseEntity<?> getForSaleTicket(@RequestHeader(HttpHeaders.AUTHORIZATION) String headerAuth) {
-        return ResponseEntity.ok(new MessageResponse("Password changed!"));
+        try {
+            String email = jwtUtils.getEmailFromJwtToken(headerAuth.split(" ")[1]);
+            if (userRepository.findByEmail(email).isPresent()) {
+                User user = userRepository.findByEmail(email).get();
+
+                List<SpectacleResponse> spectacleResponses = new ArrayList<>();
+                for (Spectacle spectacle: spectacleRepository.findBySellerAndPurchaserIsNull(user)) {
+                    spectacleResponses.add(SpectacleResponse.createSpectacleResponse(spectacle));
+                }
+
+                return ResponseEntity.ok(
+                    spectacleResponses
+                );
+            }
+        }
+        catch(Exception e) {
+            return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(new MessageResponse("Error: Could not recuperate for sales tickets!"));
+        }
+        return ResponseEntity
+            .status(HttpStatus.FORBIDDEN)
+            .body(new MessageResponse("Error: Could not recuperate for sales tickets!"));
     }
 
     @GetMapping("/sold")
     public ResponseEntity<?> getSoldTicket(@RequestHeader(HttpHeaders.AUTHORIZATION) String headerAuth) {
-        return ResponseEntity.ok(new MessageResponse("Password changed!"));
+        try {
+            String email = jwtUtils.getEmailFromJwtToken(headerAuth.split(" ")[1]);
+            if (userRepository.findByEmail(email).isPresent()) {
+                User user = userRepository.findByEmail(email).get();
+
+                List<SpectacleResponse> spectacleResponses = new ArrayList<>();
+                for (Spectacle spectacle: spectacleRepository.findBySellerAndPurchaserIsNotNull(user)) {
+                    spectacleResponses.add(SpectacleResponse.createSpectacleResponse(spectacle));
+                }
+
+                return ResponseEntity.ok(
+                    spectacleResponses
+                );
+            }
+        }
+        catch(Exception e) {
+            return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(new MessageResponse("Error: Could not recuperate for sales tickets!"));
+        }
+        return ResponseEntity
+            .status(HttpStatus.FORBIDDEN)
+            .body(new MessageResponse("Error: Could not recuperate for sales tickets!"));
     }
 }

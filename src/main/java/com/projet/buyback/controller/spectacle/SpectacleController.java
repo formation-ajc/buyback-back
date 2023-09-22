@@ -4,17 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.projet.buyback.model.Address;
 import com.projet.buyback.model.spectacle.Spectacle;
 import com.projet.buyback.model.spectacle.SpectacleCategory;
@@ -65,7 +58,7 @@ public class SpectacleController {
 	}
 
 	@PostMapping("")
-	public ResponseEntity<?> createSpectacleTicket(@RequestBody SpectacleRequest spectacleReq) {
+	public ResponseEntity<?> createSpectacleTicket(@RequestHeader(HttpHeaders.AUTHORIZATION) String headerAuth, @RequestBody SpectacleRequest spectacleReq) {
 
 		try {
 			Spectacle newSpectacleTicket = new Spectacle();
@@ -121,13 +114,13 @@ public class SpectacleController {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 						.body(new MessageResponse("The category cannot be empty !"));
 			}
-			if (spectacleReq.getSellerEmail() != null) {
-				Optional<User> optUser = userRepository.findByEmail(spectacleReq.getSellerEmail());
-				if (optUser.isPresent()) {
-					User user = optUser.get();
-					newSpectacleTicket.setSeller(user);
-				}
+
+			String email = jwtUtils.getEmailFromJwtToken(headerAuth.split(" ")[1]);
+			if (userRepository.findByEmail(email).isPresent()) {
+				User user = userRepository.findByEmail(email).get();
+				newSpectacleTicket.setSeller(user);
 			}
+
 			SpectacleResponse spectacleResponse = spectacleService.createSpectacleTicket(newSpectacleTicket);
 			return ResponseEntity.status(HttpStatus.CREATED)
 					.body(new MessageResponse("Ticket registered successfully !"));
@@ -140,7 +133,7 @@ public class SpectacleController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updateSpectacleTicket(@PathVariable("id") Long idSpectacleTicket,
+	public ResponseEntity<?> updateSpectacleTicket(@RequestHeader(HttpHeaders.AUTHORIZATION) String headerAuth, @PathVariable("id") Long idSpectacleTicket,
 			@RequestBody SpectacleRequest spectacleReq) {
 		try {
 			Optional<Spectacle> spectacle = spectacleRepository.findById(idSpectacleTicket);
@@ -200,13 +193,13 @@ public class SpectacleController {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 						.body(new MessageResponse("The category cannot be empty !"));
 			}
-			if (spectacleReq.getSellerEmail() != null) {
-				Optional<User> optUser = userRepository.findByEmail(spectacleReq.getSellerEmail());
-				if (optUser.isPresent()) {
-					User user = optUser.get();
-					updatedSpectacleTicket.setSeller(user);
-				}
+
+			String email = jwtUtils.getEmailFromJwtToken(headerAuth.split(" ")[1]);
+			if (userRepository.findByEmail(email).isPresent()) {
+				User user = userRepository.findByEmail(email).get();
+				updatedSpectacleTicket.setSeller(user);
 			}
+
 			spectacleService.createSpectacleTicket(updatedSpectacleTicket);
 			return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse("Ticket updated successfully !"));
 		} catch (Exception e) {

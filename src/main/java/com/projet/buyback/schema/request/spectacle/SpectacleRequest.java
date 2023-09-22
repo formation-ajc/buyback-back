@@ -11,7 +11,6 @@ public class SpectacleRequest {
 	private String addressName;
 	private String addressZipcode;
 	private Long spectacleCategoryId;
-	private String sellerEmail;
 
 	public String getName() {
 		return name;
@@ -69,19 +68,11 @@ public class SpectacleRequest {
 		this.spectacleCategoryId = spectacleCategoryId;
 	}
 
-	public String getSellerEmail() {
-		return sellerEmail;
-	}
-
-	public void setSellerEmail(String sellerEmail) {
-		this.sellerEmail = sellerEmail;
-	}
-
 	@Override
 	public String toString() {
 		return "SpectacleRequest [name=" + name + ", price=" + price + ", startDate=" + startDate + ", endDate="
 				+ endDate + ", addressName=" + addressName + ", addressZipcode=" + addressZipcode
-				+ ", spectaclecategoryId=" + spectacleCategoryId + ", userEmail=" + sellerEmail + "]";
+				+ ", spectaclecategoryId=" + spectacleCategoryId + "]";
 	}
 
 }
