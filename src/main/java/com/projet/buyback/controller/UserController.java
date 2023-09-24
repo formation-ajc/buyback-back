@@ -3,7 +3,6 @@ package com.projet.buyback.controller;
 import com.projet.buyback.model.User;
 import com.projet.buyback.model.security.RefreshToken;
 import com.projet.buyback.repository.UserRepository;
-import com.projet.buyback.schema.request.security.LoginRequest;
 import com.projet.buyback.schema.request.user.UpdatePasswordUserRequest;
 import com.projet.buyback.schema.request.user.UpdateUserRequest;
 import com.projet.buyback.schema.response.security.MessageResponse;
@@ -60,6 +59,7 @@ public class UserController {
         this.refreshTokenService = refreshTokenService;
         this.encoder = encoder;
     }
+    
 
     @PostMapping("/update")
     public ResponseEntity<?> update(@RequestHeader(HttpHeaders.AUTHORIZATION) String headerAuth, @Valid @RequestBody UpdateUserRequest updateUserRequest) {
