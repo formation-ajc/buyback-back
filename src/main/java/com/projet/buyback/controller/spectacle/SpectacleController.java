@@ -3,6 +3,7 @@ package com.projet.buyback.controller.spectacle;
 import java.util.List;
 import java.util.Optional;
 
+import com.projet.buyback.schema.response.sport.SportResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -38,8 +39,22 @@ public class SpectacleController {
 	JwtUtils jwtUtils;
 
 	@GetMapping("")
-	public ResponseEntity<?> getAllSpectacleTickets() {
-		List<SpectacleResponse> spectacleTickets = spectacleService.getAllSpectacleTickets();
+	public ResponseEntity<?> getAllSpectacleTickets(@RequestHeader(HttpHeaders.AUTHORIZATION) Optional<String> headerAuth, @RequestParam() Optional<Integer> nb) {
+
+		User user = null;
+		if (headerAuth.isPresent()) {
+			String email = jwtUtils.getEmailFromJwtToken(headerAuth.get().split(" ")[1]);
+			if (userRepository.findByEmail(email).isPresent()) {
+				user = userRepository.findByEmail(email).get();
+			}
+		}
+
+		List<SpectacleResponse> spectacleTickets;
+		if (nb.isEmpty())
+			spectacleTickets = spectacleService.getAllSpectacleTickets();
+		else
+			spectacleTickets = spectacleService.getAllSpectacleTicketsLimit(user, nb.get());
+
 		if (spectacleTickets != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(spectacleTickets);
 		} else {

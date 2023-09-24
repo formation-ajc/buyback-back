@@ -12,6 +12,7 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -83,6 +84,8 @@ public class SecurityConfig {
 
                 //Toutes les requêtes HTTP listées sont autorisées pour tout le monde
                 .requestMatchers(baseURL + "/login", baseURL + "/register", baseURL + "/refresh-token").permitAll()
+                .requestMatchers(HttpMethod.GET,baseURL + "/sports", baseURL + "/spectacles").permitAll()
+                .requestMatchers(HttpMethod.GET,baseURL + "/sports/{id}", baseURL + "/spectacles/{id}").permitAll()
 
                 //on gere les droits sur les routes ici (voir la hierarchie dans la fonction d'avant)
                 .requestMatchers(baseURL + "/test/user").hasAnyAuthority("USER")

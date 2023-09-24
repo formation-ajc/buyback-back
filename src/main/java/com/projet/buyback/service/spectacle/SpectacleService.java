@@ -1,10 +1,15 @@
 package com.projet.buyback.service.spectacle;
 
+import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.projet.buyback.model.User;
+import com.projet.buyback.model.sport.Sport;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.projet.buyback.model.spectacle.Spectacle;
@@ -23,6 +28,26 @@ public class SpectacleService {
 			
 			List<SpectacleResponse> spectacleTicketsDto = new ArrayList<>();
 			
+			for (Spectacle spectacle : spectacleTickets) {
+				spectacleTicketsDto.add(SpectacleResponse.createSpectacleResponse(spectacle));
+			}
+			return spectacleTicketsDto;
+		}else {
+			return null;
+		}
+	}
+
+	public List<SpectacleResponse> getAllSpectacleTicketsLimit(User user, int limit) {
+
+//		List<Spectacle> spectacleTickets = spectacleRepository.findAll(PageRequest.of(0,limit)).stream().toList();
+		List<Spectacle> spectacleTickets = spectacleRepository.findAllBySellerIsNullOrSellerIsNotAndPurchaserIsNullOrderByStartDateAsc(
+			user,
+            PageRequest.of(0, limit)
+        ).stream().toList();
+
+
+		if(!spectacleTickets.isEmpty()) {
+			List<SpectacleResponse> spectacleTicketsDto = new ArrayList<>();
 			for (Spectacle spectacle : spectacleTickets) {
 				spectacleTicketsDto.add(SpectacleResponse.createSpectacleResponse(spectacle));
 			}
