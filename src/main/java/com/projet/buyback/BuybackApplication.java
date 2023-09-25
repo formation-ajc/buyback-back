@@ -19,7 +19,7 @@ public class BuybackApplication {
 		System.setProperty("java.awt.headless", "false");
 		Desktop desktop = Desktop.getDesktop();
 		try {
-			desktop.browse(new URI("http://localhost:8080/swagger-ui/index.html"));
+			desktop.browse(new URI("http://localhost:9000/swagger-ui/index.html"));
 		}
 		catch(Exception e) {
 			System.out.println("ERROR LOADING PAGE");

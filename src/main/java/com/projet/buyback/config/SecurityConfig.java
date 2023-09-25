@@ -135,7 +135,7 @@ public class SecurityConfig {
             .info(new Info().title("BUYBACK API")
                 .description("Some custom description of API.")
                 .version("1.0").contact(new Contact().name("Robin FOUTEL")
-                    .email( "robin.foutel@gmail.com").url("http://localhost:8080/swagger-ui/index.html"))
+                    .email( "robin.foutel@gmail.com").url("http://localhost:9000/swagger-ui/index.html"))
                 .license(new License().name("License of API")
                     .url("API license URL")));
     }
