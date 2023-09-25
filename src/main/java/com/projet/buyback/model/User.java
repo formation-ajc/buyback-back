@@ -39,7 +39,7 @@ public class User {
     @OneToOne(cascade = CascadeType.REMOVE, mappedBy = "user")
     private RefreshToken refresh;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(	name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
