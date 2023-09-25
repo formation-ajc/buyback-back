@@ -11,6 +11,7 @@ public class SportRequest {
 	private String addressName;
 	private String addressZipcode;
 	private Long sportCategoryId;
+	private String description;
 
 	public String getName() {
 		return name;
@@ -66,6 +67,14 @@ public class SportRequest {
 
 	public void setSportCategoryId(Long sportCategoryId) {
 		this.sportCategoryId = sportCategoryId;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Override

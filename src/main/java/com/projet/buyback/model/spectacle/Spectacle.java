@@ -30,6 +30,8 @@ public class Spectacle {
 	private LocalDate startDate;
 	@Column(nullable = false)
 	private LocalDate endDate;
+	@Column(name = "description")
+	private String description;
 	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
 	@JoinColumn(name = "address_id" , referencedColumnName = "id")
 	private Address address;
@@ -125,6 +127,14 @@ public class Spectacle {
 
 	public void setPurchaser(User purchaser) {
 		this.purchaser = purchaser;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Override

@@ -15,6 +15,7 @@ public class SpectacleResponse {
 	private LocalDate startDate;
 	private LocalDate endDate;
 	private Address address;
+	private String description;
 	private SpectacleCategory category;
 	private UserPublicResponse seller;
 	private UserPublicResponse purchaser;
@@ -34,6 +35,7 @@ public class SpectacleResponse {
 		LocalDate startDate,
 		LocalDate endDate,
 		Address address,
+		String description,
 		SpectacleCategory category,
 		UserPublicResponse seller,
 		UserPublicResponse purchaser
@@ -45,6 +47,7 @@ public class SpectacleResponse {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.address = address;
+		this.description = description;
 		this.category = category;
 		this.seller = seller;
 		this.purchaser = purchaser;
@@ -58,6 +61,7 @@ public class SpectacleResponse {
 			spectacle.getStartDate(),
 			spectacle.getEndDate(),
 			spectacle.getAddress(),
+			spectacle.getDescription(),
 			spectacle.getSpectacleCategory(),
 			(spectacle.getSeller() != null)?
 				new UserPublicResponse(
@@ -142,6 +146,14 @@ public class SpectacleResponse {
 
 	public void setPurchaser(UserPublicResponse purchaser) {
 		this.purchaser = purchaser;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Override

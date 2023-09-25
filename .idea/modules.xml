@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/buyback.iml" filepath="$PROJECT_DIR$/buyback.iml" />
+      <module fileurl="file://$PROJECT_DIR$/instagram.iml" filepath="$PROJECT_DIR$/instagram.iml" />
     </modules>
   </component>
 </project>

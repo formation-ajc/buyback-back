@@ -76,6 +76,9 @@ public class SpectacleController {
 
 		try {
 			Spectacle newSpectacleTicket = new Spectacle();
+
+			newSpectacleTicket.setDescription(spectacleReq.getDescription());
+
 			if (spectacleReq.getName() != null && !spectacleReq.getName().isEmpty()) {
 				newSpectacleTicket.setName(spectacleReq.getName());
 			} else {
@@ -102,7 +105,7 @@ public class SpectacleController {
 			}
 			Address address = new Address();
 			if (spectacleReq.getAddressName() != null && !spectacleReq.getAddressName().isEmpty()) {
-				address.setName(spectacleReq.getName());
+				address.setName(spectacleReq.getAddressName());
 			} else {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 						.body(new MessageResponse("The address name cannot be empty !"));
@@ -155,6 +158,10 @@ public class SpectacleController {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Ticket not found !"));
 			}
 			Spectacle updatedSpectacleTicket = spectacle.get();
+
+			updatedSpectacleTicket.setDescription(spectacleReq.getDescription());
+
+
 			if (spectacleReq.getName() != null && !spectacleReq.getName().isEmpty()) {
 				updatedSpectacleTicket.setName(spectacleReq.getName());
 			} else {

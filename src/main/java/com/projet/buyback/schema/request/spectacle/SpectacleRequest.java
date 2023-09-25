@@ -11,6 +11,7 @@ public class SpectacleRequest {
 	private String addressName;
 	private String addressZipcode;
 	private Long spectacleCategoryId;
+	private String description;
 
 	public String getName() {
 		return name;
@@ -66,6 +67,14 @@ public class SpectacleRequest {
 
 	public void setSpectacleCategoryId(Long spectacleCategoryId) {
 		this.spectacleCategoryId = spectacleCategoryId;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Override

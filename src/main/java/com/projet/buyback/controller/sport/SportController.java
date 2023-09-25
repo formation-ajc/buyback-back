@@ -75,18 +75,25 @@ public class SportController {
 	public ResponseEntity<?> createSportTicket(@RequestHeader(HttpHeaders.AUTHORIZATION) String headerAuth, @RequestBody SportRequest sportReq) {
 		try {
 			Sport newSportTicket = new Sport();
+
+			newSportTicket.setDescription(sportReq.getDescription());
+
+
 			if (sportReq.getName() != null && !sportReq.getName().isEmpty()) {
 				newSportTicket.setName(sportReq.getName());
 			} else {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 						.body(new MessageResponse("The name cannot be empty !"));
 			}
+
+
 			if (sportReq.getPrice() != null) {
 				newSportTicket.setPrice(sportReq.getPrice());
 			} else {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 						.body(new MessageResponse("The price cannot be empty !"));
 			}
+
 			if (sportReq.getStartDate() != null && sportReq.getEndDate() != null) {
 				if (sportReq.getStartDate().isAfter(sportReq.getEndDate())) {
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -99,12 +106,14 @@ public class SportController {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 						.body(new MessageResponse("The start date and the end date cannot be empty !"));
 			}
+
 			if (sportReq.getEndDate() != null) {
 				newSportTicket.setEndDate(sportReq.getEndDate());
 			} else {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 						.body(new MessageResponse("The end date cannot be empty !"));
 			}
+
 			Address address = new Address();
 			if (sportReq.getAddressName() != null && !sportReq.getAddressName().isEmpty()) {
 				address.setName(sportReq.getAddressName());
@@ -112,12 +121,14 @@ public class SportController {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 						.body(new MessageResponse("The address name cannot be empty !"));
 			}
+
 			if (sportReq.getAddressZipcode() != null && !sportReq.getAddressZipcode().isEmpty()) {
 				address.setZipcode(sportReq.getAddressZipcode());
 			} else {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 						.body(new MessageResponse("The address zipcode cannot be empty !"));
 			}
+
 			newSportTicket.setAddress(address);
 
 			if (sportReq.getSportCategoryId() != null) {
@@ -164,6 +175,10 @@ public class SportController {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Ticket not found !"));
 			}
 			Sport updatedSportTicket = sport.get();
+
+			updatedSportTicket.setDescription(sportReq.getDescription());
+
+
 			if (sportReq.getName() != null && !sportReq.getName().isEmpty()) {
 				updatedSportTicket.setName(sportReq.getName());
 			} else {
