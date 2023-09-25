@@ -1,5 +1,10 @@
 package com.projet.buyback.model.security;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import com.projet.buyback.model.User;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -14,6 +19,9 @@ public class Role {
     @Column(name = "name", nullable = false, unique = true, length = 20)
     private ERole name;
 
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users = new HashSet<>();
+    
     public Role() {}
 
     public Long getId() {

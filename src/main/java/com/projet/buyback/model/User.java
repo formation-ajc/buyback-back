@@ -1,5 +1,6 @@
 package com.projet.buyback.model;
 
+import com.projet.buyback.model.security.RefreshToken;
 import com.projet.buyback.model.security.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -7,6 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -34,12 +36,15 @@ public class User {
     @NotBlank
     @Column(name = "lastname", nullable = false)
     private String lastname;
+    @OneToOne(cascade = CascadeType.REMOVE, mappedBy = "user")
+    private RefreshToken refresh;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(	name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
 
 
     public User() {
