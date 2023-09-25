@@ -24,6 +24,12 @@ public interface SportRepository extends JpaRepository<Sport, Long> {
 		"WHERE (:seller IS NULL OR sport.seller != :seller) " +
 		"AND sport.purchaser is null "
 		+ "ORDER BY sport.startDate ASC")
+	List<Sport> findAllBySellerIsNullOrSellerIsNotAndPurchaserIsNullOrderByStartDateAsc(@Param("seller") User seller);
+
+	@Query("SELECT sport FROM Sport sport " +
+		"WHERE (:seller IS NULL OR sport.seller != :seller) " +
+		"AND sport.purchaser is null "
+		+ "ORDER BY sport.startDate ASC")
 	List<Sport> findAllBySellerIsNullOrSellerIsNotAndPurchaserIsNullOrderByStartDateAsc(@Param("seller") User seller, PageRequest limit);
 
 }

@@ -1,13 +1,9 @@
 package com.projet.buyback.service.sport;
 
-import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.projet.buyback.model.spectacle.Spectacle;
-import com.projet.buyback.schema.response.spectacle.SpectacleResponse;
-import com.projet.buyback.schema.response.user.UserPublicResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -38,12 +34,18 @@ public class SportService {
 		}
 	}
 
-	public List<SportResponse> getAllSportTicketsLimit(User user, int limit) {
+	public List<SportResponse> getAllSportTicketsWithoutSeller(User user, Integer limit) {
 
 //		List<Sport> sportTickets = sportRepository.findAll(PageRequest.of(0,limit)).stream().toList();
-		List<Sport> sportTickets = sportRepository.findAllBySellerIsNullOrSellerIsNotAndPurchaserIsNullOrderByStartDateAsc(
-			user,
-			PageRequest.of(0, limit)
+		List<Sport> sportTickets;
+		if (limit == null)
+			sportTickets = sportRepository.findAllBySellerIsNullOrSellerIsNotAndPurchaserIsNullOrderByStartDateAsc(
+				user
+			).stream().toList();
+		else
+			sportTickets = sportRepository.findAllBySellerIsNullOrSellerIsNotAndPurchaserIsNullOrderByStartDateAsc(
+				user,
+				PageRequest.of(0, limit)
 		).stream().toList();
 
 

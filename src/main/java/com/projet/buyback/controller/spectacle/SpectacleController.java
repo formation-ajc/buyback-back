@@ -3,7 +3,6 @@ package com.projet.buyback.controller.spectacle;
 import java.util.List;
 import java.util.Optional;
 
-import com.projet.buyback.schema.response.sport.SportResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -51,9 +50,9 @@ public class SpectacleController {
 
 		List<SpectacleResponse> spectacleTickets;
 		if (nb.isEmpty())
-			spectacleTickets = spectacleService.getAllSpectacleTickets();
+			spectacleTickets = spectacleService.getAllSpectacleTicketsWithoutUser(user, null);
 		else
-			spectacleTickets = spectacleService.getAllSpectacleTicketsLimit(user, nb.get());
+			spectacleTickets = spectacleService.getAllSpectacleTicketsWithoutUser(user, nb.get());
 
 		if (spectacleTickets != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(spectacleTickets);

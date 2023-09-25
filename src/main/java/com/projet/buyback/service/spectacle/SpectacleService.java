@@ -1,15 +1,12 @@
 package com.projet.buyback.service.spectacle;
 
-import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import com.projet.buyback.model.User;
-import com.projet.buyback.model.sport.Sport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.projet.buyback.model.spectacle.Spectacle;
@@ -37,13 +34,19 @@ public class SpectacleService {
 		}
 	}
 
-	public List<SpectacleResponse> getAllSpectacleTicketsLimit(User user, int limit) {
+	public List<SpectacleResponse> getAllSpectacleTicketsWithoutUser(User user, Integer limit) {
 
 //		List<Spectacle> spectacleTickets = spectacleRepository.findAll(PageRequest.of(0,limit)).stream().toList();
-		List<Spectacle> spectacleTickets = spectacleRepository.findAllBySellerIsNullOrSellerIsNotAndPurchaserIsNullOrderByStartDateAsc(
-			user,
-            PageRequest.of(0, limit)
-        ).stream().toList();
+		List<Spectacle> spectacleTickets;
+		if (limit == null)
+			spectacleTickets = spectacleRepository.findAllBySellerIsNullOrSellerIsNotAndPurchaserIsNullOrderByStartDateAsc(
+				user
+			).stream().toList();
+		else
+			spectacleTickets = spectacleRepository.findAllBySellerIsNullOrSellerIsNotAndPurchaserIsNullOrderByStartDateAsc(
+				user,
+				PageRequest.of(0, limit)
+			).stream().toList();
 
 
 		if(!spectacleTickets.isEmpty()) {

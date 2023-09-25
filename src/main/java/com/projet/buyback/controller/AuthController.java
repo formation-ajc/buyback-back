@@ -96,7 +96,7 @@ public class AuthController {
         catch(Exception e) {// see note 2
                 return ResponseEntity
                     .status(HttpStatus.FORBIDDEN)
-                    .body(new MessageResponse("Error: User not exist!"));
+                    .body(new MessageResponse("Error: Wrong email or password!"));
             }
     }
 

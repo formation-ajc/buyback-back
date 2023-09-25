@@ -24,6 +24,12 @@ public interface SpectacleRepository extends JpaRepository<Spectacle, Long> {
 		"WHERE (:seller IS NULL OR spectacle.seller != :seller) " +
 		"AND spectacle.purchaser is null "
 		+ "ORDER BY spectacle.startDate ASC")
+	List<Spectacle> findAllBySellerIsNullOrSellerIsNotAndPurchaserIsNullOrderByStartDateAsc(@Param("seller") User seller);
+
+	@Query("SELECT spectacle FROM Spectacle spectacle " +
+		"WHERE (:seller IS NULL OR spectacle.seller != :seller) " +
+		"AND spectacle.purchaser is null "
+		+ "ORDER BY spectacle.startDate ASC")
 	List<Spectacle> findAllBySellerIsNullOrSellerIsNotAndPurchaserIsNullOrderByStartDateAsc(@Param("seller") User seller, PageRequest limit);
 
 }

@@ -1,10 +1,8 @@
 package com.projet.buyback.controller.sport;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.projet.buyback.schema.response.spectacle.SpectacleResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -52,9 +50,9 @@ public class SportController {
 
 		List<SportResponse> sportTickets;
 		if (nb.isEmpty())
-			sportTickets = sportService.getAllSportTickets();
+			sportTickets = sportService.getAllSportTicketsWithoutSeller(user, null);
 		else
-			sportTickets = sportService.getAllSportTicketsLimit(user, nb.get());
+			sportTickets = sportService.getAllSportTicketsWithoutSeller(user, nb.get());
 
 		if (sportTickets != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(sportTickets);
