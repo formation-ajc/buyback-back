@@ -38,7 +38,11 @@ public class SportController {
 	JwtUtils jwtUtils;
 
 	@GetMapping("")
-	public ResponseEntity<?> getAllSportTickets(@RequestHeader(HttpHeaders.AUTHORIZATION) Optional<String> headerAuth, @RequestParam() Optional<Integer> nb) {
+	public ResponseEntity<?> getAllSportTickets(
+		@RequestHeader(HttpHeaders.AUTHORIZATION) Optional<String> headerAuth,
+		@RequestParam() Optional<Integer> nb,
+		@RequestParam() Optional<String> like
+	) {
 
 		User user = null;
 		if (headerAuth.isPresent()) {
@@ -49,10 +53,13 @@ public class SportController {
 		}
 
 		List<SportResponse> sportTickets;
-		if (nb.isEmpty())
-			sportTickets = sportService.getAllSportTicketsWithoutSeller(user, null);
+		if (like.isPresent())
+			sportTickets = sportService.getAllSportTicketsWithoutSeller(user,null, "%" + like.get() + "%");
+		else if (nb.isPresent())
+			sportTickets = sportService.getAllSportTicketsWithoutSeller(user, nb.get(), null);
 		else
-			sportTickets = sportService.getAllSportTicketsWithoutSeller(user, nb.get());
+			sportTickets = sportService.getAllSportTicketsWithoutSeller(user, null, null);
+
 
 		if (sportTickets != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(sportTickets);

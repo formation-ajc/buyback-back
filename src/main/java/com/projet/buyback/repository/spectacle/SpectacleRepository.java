@@ -1,5 +1,6 @@
 package com.projet.buyback.repository.spectacle;
 
+import com.projet.buyback.model.sport.Sport;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,6 +21,13 @@ public interface SpectacleRepository extends JpaRepository<Spectacle, Long> {
 	List<Spectacle> findBySellerAndPurchaserIsNotNull(User user);
 	List<Spectacle> findBySellerAndPurchaserIsNull(User user);
 	List<Spectacle> findByPurchaser(User user);
+
+	@Query("SELECT spectacle FROM Spectacle spectacle " +
+		"WHERE (:seller IS NULL OR spectacle.seller != :seller) " +
+		"AND spectacle.purchaser is null AND (spectacle.name LIKE :like OR spectacle.spectacleCategory.name LIKE :like) "
+		+ "ORDER BY spectacle.startDate ASC")
+	List<Spectacle> findAllBySellerIsNullOrSellerIsNotAndPurchaserIsNullOrderByStartDateAsc(@Param("seller") User seller, @Param("like") String like);
+
 	@Query("SELECT spectacle FROM Spectacle spectacle " +
 		"WHERE (:seller IS NULL OR spectacle.seller != :seller) " +
 		"AND spectacle.purchaser is null "
