@@ -80,7 +80,7 @@ public class SportRequest {
 	@Override
 	public String toString() {
 		return "SportRequest [name=" + name + ", price=" + price + ", startDate=" + startDate + ", endDate=" + endDate
-				+ ", addressName=" + addressName + ", addressZipcode=" + addressZipcode + ", sportcategoryId="
+				+ ", addressName=" + addressName + ", addressZipcode=" + addressZipcode + ", sportCategoryId="
 				+ sportCategoryId + "]";
 	}
 

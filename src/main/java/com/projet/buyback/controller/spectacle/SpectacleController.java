@@ -3,6 +3,7 @@ package com.projet.buyback.controller.spectacle;
 import java.util.List;
 import java.util.Optional;
 
+import com.projet.buyback.schema.response.sport.SportResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -38,7 +39,11 @@ public class SpectacleController {
 	JwtUtils jwtUtils;
 
 	@GetMapping("")
-	public ResponseEntity<?> getAllSpectacleTickets(@RequestHeader(HttpHeaders.AUTHORIZATION) Optional<String> headerAuth, @RequestParam() Optional<Integer> nb) {
+	public ResponseEntity<?> getAllSportTickets(
+		@RequestHeader(HttpHeaders.AUTHORIZATION) Optional<String> headerAuth,
+		@RequestParam() Optional<Integer> nb,
+		@RequestParam() Optional<String> like
+	) {
 
 		User user = null;
 		if (headerAuth.isPresent()) {
@@ -49,10 +54,12 @@ public class SpectacleController {
 		}
 
 		List<SpectacleResponse> spectacleTickets;
-		if (nb.isEmpty())
-			spectacleTickets = spectacleService.getAllSpectacleTicketsWithoutUser(user, null);
+		if (like.isPresent())
+			spectacleTickets = spectacleService.getAllSpectacleTicketsWithoutSeller(user,null, "%" + like.get() + "%");
+		else if (nb.isPresent())
+			spectacleTickets = spectacleService.getAllSpectacleTicketsWithoutSeller(user, nb.get(), null);
 		else
-			spectacleTickets = spectacleService.getAllSpectacleTicketsWithoutUser(user, nb.get());
+			spectacleTickets = spectacleService.getAllSpectacleTicketsWithoutSeller(user, null, null);
 
 		if (spectacleTickets != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(spectacleTickets);

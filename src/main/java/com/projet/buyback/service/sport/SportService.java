@@ -34,19 +34,24 @@ public class SportService {
 		}
 	}
 
-	public List<SportResponse> getAllSportTicketsWithoutSeller(User user, Integer limit) {
+	public List<SportResponse> getAllSportTicketsWithoutSeller(User user, Integer limit, String like) {
 
 //		List<Sport> sportTickets = sportRepository.findAll(PageRequest.of(0,limit)).stream().toList();
 		List<Sport> sportTickets;
-		if (limit == null)
-			sportTickets = sportRepository.findAllBySellerIsNullOrSellerIsNotAndPurchaserIsNullOrderByStartDateAsc(
-				user
-			).stream().toList();
-		else
+		if (limit != null)
 			sportTickets = sportRepository.findAllBySellerIsNullOrSellerIsNotAndPurchaserIsNullOrderByStartDateAsc(
 				user,
 				PageRequest.of(0, limit)
-		).stream().toList();
+			).stream().toList();
+		else if(like != null)
+			sportTickets = sportRepository.findAllBySellerIsNullOrSellerIsNotAndPurchaserIsNullOrderByStartDateAsc(
+				user,
+				like
+			).stream().toList();
+		else
+			sportTickets = sportRepository.findAllBySellerIsNullOrSellerIsNotAndPurchaserIsNullOrderByStartDateAsc(
+				user
+			).stream().toList();
 
 
 		if(!sportTickets.isEmpty()) {

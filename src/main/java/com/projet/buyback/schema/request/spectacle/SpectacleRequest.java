@@ -81,7 +81,7 @@ public class SpectacleRequest {
 	public String toString() {
 		return "SpectacleRequest [name=" + name + ", price=" + price + ", startDate=" + startDate + ", endDate="
 				+ endDate + ", addressName=" + addressName + ", addressZipcode=" + addressZipcode
-				+ ", spectaclecategoryId=" + spectacleCategoryId + "]";
+				+ ", spectacleCategoryId=" + spectacleCategoryId + "]";
 	}
 
 }

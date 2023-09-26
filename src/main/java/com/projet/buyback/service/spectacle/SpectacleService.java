@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import com.projet.buyback.model.User;
+import com.projet.buyback.model.sport.Sport;
+import com.projet.buyback.schema.response.sport.SportResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -34,18 +36,23 @@ public class SpectacleService {
 		}
 	}
 
-	public List<SpectacleResponse> getAllSpectacleTicketsWithoutUser(User user, Integer limit) {
+	public List<SpectacleResponse> getAllSpectacleTicketsWithoutSeller(User user, Integer limit, String like) {
 
-//		List<Spectacle> spectacleTickets = spectacleRepository.findAll(PageRequest.of(0,limit)).stream().toList();
+//		List<Sport> sportTickets = sportRepository.findAll(PageRequest.of(0,limit)).stream().toList();
 		List<Spectacle> spectacleTickets;
-		if (limit == null)
-			spectacleTickets = spectacleRepository.findAllBySellerIsNullOrSellerIsNotAndPurchaserIsNullOrderByStartDateAsc(
-				user
-			).stream().toList();
-		else
+		if (limit != null)
 			spectacleTickets = spectacleRepository.findAllBySellerIsNullOrSellerIsNotAndPurchaserIsNullOrderByStartDateAsc(
 				user,
 				PageRequest.of(0, limit)
+			).stream().toList();
+		else if(like != null)
+			spectacleTickets = spectacleRepository.findAllBySellerIsNullOrSellerIsNotAndPurchaserIsNullOrderByStartDateAsc(
+				user,
+				like
+			).stream().toList();
+		else
+			spectacleTickets = spectacleRepository.findAllBySellerIsNullOrSellerIsNotAndPurchaserIsNullOrderByStartDateAsc(
+				user
 			).stream().toList();
 
 
