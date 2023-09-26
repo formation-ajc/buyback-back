@@ -42,14 +42,24 @@ public class BuySpectacleController {
 	private SpectacleService spectacleService;
 
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getSpectacleTicketWithoutPurshaser(@PathVariable("id") Long spectacleId) {
-		SpectacleResponse spectacleResponse = spectacleService.getSpectacleTicketById(spectacleId);
-		if (spectacleResponse != null) {
-			if (spectacleResponse.getPurchaser() == null) {
-				return ResponseEntity.status(HttpStatus.OK).body(spectacleResponse);
-			}
+	public ResponseEntity<?> getSpectacleTicketWithoutPurshaser(@RequestHeader(HttpHeaders.AUTHORIZATION) String headerAuth,
+			@PathVariable("id") Long sportId) {
+		String email = jwtUtils.getEmailFromJwtToken(headerAuth.split(" ")[1]);
+		User user = null;
+		if (userRepository.findByEmail(email) != null) {
+			user = userRepository.findByEmail(email).get();
 		}
+		SpectacleResponse spectacleResponse = spectacleService.getSpectacleTicketById(sportId);
+		if (spectacleResponse != null) {
+			if (spectacleResponse.getPurchaser() != null) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Ticket not found !"));
+			} else if (user.getId() == spectacleResponse.getSeller().getId()) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(new MessageResponse("You cannot buy your own ticket !"));
+			}
+			return ResponseEntity.status(HttpStatus.OK).body(spectacleResponse);
 
+		}
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Ticket not found !"));
 
 	}

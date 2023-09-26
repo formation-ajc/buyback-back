@@ -1,4 +1,5 @@
 package com.projet.buyback.controller.sport;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ import com.projet.buyback.schema.response.security.MessageResponse;
 import com.projet.buyback.schema.response.sport.SportResponse;
 import com.projet.buyback.service.sport.SportService;
 import com.projet.buyback.service.user.UserService;
-import com.projet.buyback.utils.security.JwtUtils; 
+import com.projet.buyback.utils.security.JwtUtils;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -41,14 +42,24 @@ public class BuySportController {
 	private SportService sportService;
 
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getSportTicketWithoutPurshaser(@PathVariable("id") Long sportId) {
+	public ResponseEntity<?> getSportTicketWithoutPurshaser(@RequestHeader(HttpHeaders.AUTHORIZATION) String headerAuth,
+			@PathVariable("id") Long sportId) {
+		String email = jwtUtils.getEmailFromJwtToken(headerAuth.split(" ")[1]);
+		User user = null;
+		if (userRepository.findByEmail(email) != null) {
+			user = userRepository.findByEmail(email).get();
+		}
 		SportResponse sportResponse = sportService.getSportTicketById(sportId);
 		if (sportResponse != null) {
-			if (sportResponse.getPurchaser() == null) {
-				return ResponseEntity.status(HttpStatus.OK).body(sportResponse);
+			if (sportResponse.getPurchaser() != null) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Ticket not found !"));
+			} else if (user.getId() == sportResponse.getSeller().getId()) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(new MessageResponse("You cannot buy your own ticket !"));
 			}
-		}
+			return ResponseEntity.status(HttpStatus.OK).body(sportResponse);
 
+		}
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Ticket not found !"));
 
 	}
