@@ -11,7 +11,9 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "address")
 public class Address {
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", updatable = false, nullable = false, unique = true)
 	private Long id;
 	@Column(nullable = false)
 	private String name;

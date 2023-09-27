@@ -21,6 +21,7 @@ public class Spectacle {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", updatable = false, nullable = false, unique = true)
 	private Long id;
 	@Column(nullable = false)
 	private String name;
@@ -32,7 +33,7 @@ public class Spectacle {
 	private LocalDate endDate;
 	@Column(name = "description")
 	private String description;
-	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
 	@JoinColumn(name = "address_id" , referencedColumnName = "id")
 	private Address address;
 	@ManyToOne
