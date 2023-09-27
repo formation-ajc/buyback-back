@@ -1,13 +1,13 @@
 package com.projet.buyback;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class BuybackApplicationTests {
 
+@SpringBootTest(classes = BuybackApplication.class)
+class BuybackApplicationTests {	
+	
 	@Test
 	void contextLoads() {
 	}
-
+	
 }
