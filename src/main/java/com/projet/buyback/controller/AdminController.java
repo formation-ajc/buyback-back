@@ -1,5 +1,6 @@
 package com.projet.buyback.controller;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,10 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.projet.buyback.model.User;
 import com.projet.buyback.model.security.ERole;
 import com.projet.buyback.model.security.Role;
+import com.projet.buyback.model.spectacle.Spectacle;
+import com.projet.buyback.model.sport.Sport;
 import com.projet.buyback.repository.UserRepository;
 import com.projet.buyback.repository.security.RoleRepository;
 import com.projet.buyback.schema.request.security.SignupRequest;
 import com.projet.buyback.schema.response.security.MessageResponse;
+import com.projet.buyback.schema.response.user.UserAdminResponse;
 
 import jakarta.validation.Valid;
 
@@ -42,8 +46,13 @@ public class AdminController {
     @GetMapping("")
     public ResponseEntity<?> getAllUsers(){
     	List<User> users = userRepository.findAll();
+    	
+    	List<UserAdminResponse> userResponseList = new ArrayList<>(); 
     	if(!users.isEmpty()) {
-    		return ResponseEntity.ok(users);
+    		for (User user : users) {
+    			userResponseList.add(new UserAdminResponse(user.getId(), user.getFirstname(), user.getLastname(), user.getEmail(), user.getRoles()));
+    		}
+    		return ResponseEntity.ok(userResponseList);
     	}
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new MessageResponse("No result!"));
     }
@@ -126,6 +135,20 @@ public class AdminController {
     public ResponseEntity<?> deleteUser(@PathVariable("id") Long id){
     	User user = userRepository.findById(id).get();
     	if(user != null) {
+    		for (Sport sport : user.getSportsSeller()) {
+    			 sport.setSeller(null);
+			}
+    		for (Sport sport : user.getSportsPurshaser()) {
+   			 sport.setPurchaser(null);
+			}
+    		
+    		for (Spectacle spectacle : user.getSpectaclesSeller()) {
+      			 spectacle.setSeller(null);
+    		}
+    		
+    		for (Spectacle spectacle : user.getSpectaclesPurchaser()) {
+      			 spectacle.setPurchaser(null);
+   			}
     		userRepository.deleteById(id);
     		return ResponseEntity.ok(new MessageResponse("User deleted successfully"));
     	}

@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "role")
-public class Role {
+public class Role { 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false, unique = true)

@@ -1,9 +1,10 @@
 package com.projet.buyback.schema.response.user;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.projet.buyback.model.security.Role;
+
 
 public class UserAdminResponse {
 
@@ -11,11 +12,9 @@ public class UserAdminResponse {
 	private String firstname;
 	private String lastname;
 	private String email;
-	private List<String> roles = new ArrayList<>();
+	private Set<Role> roles = new HashSet<>();
 
-	
-	
-	public UserAdminResponse(Long id, String firstname, String lastname, String email, List<String> roles) {
+	public UserAdminResponse(Long id, String firstname, String lastname, String email, Set<Role> roles) {
 		super();
 		this.id = id;
 		this.firstname = firstname;
@@ -56,11 +55,12 @@ public class UserAdminResponse {
 		this.email = email;
 	}
 
-	public List<String> getRoles() {
+
+	public Set<Role> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(List<String> roles) {
+	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
 
