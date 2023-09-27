@@ -46,15 +46,6 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
-    @OneToMany(mappedBy = "seller")
-    private Set<Sport> sportsSeller = new HashSet<>();
-    @OneToMany(mappedBy = "purchaser")
-    private Set<Sport> sportsPurshaser = new HashSet<>();
-    @OneToMany(mappedBy = "seller")
-    private Set<Spectacle> spectaclesSeller = new HashSet<>();
-    @OneToMany(mappedBy = "purchaser")
-    private Set<Spectacle> spectaclesPurchaser = new HashSet<>();
-
 
     public User() {
     }
@@ -119,47 +110,6 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
-    
-
-    public RefreshToken getRefresh() {
-		return refresh;
-	}
-
-	public void setRefresh(RefreshToken refresh) {
-		this.refresh = refresh;
-	}
-
-	public Set<Sport> getSportsSeller() {
-		return sportsSeller;
-	}
-
-	public void setSportsSeller(Set<Sport> sportsSeller) {
-		this.sportsSeller = sportsSeller;
-	}
-
-	public Set<Sport> getSportsPurshaser() {
-		return sportsPurshaser;
-	}
-
-	public void setSportsPurshaser(Set<Sport> sportsPurshaser) {
-		this.sportsPurshaser = sportsPurshaser;
-	}
-
-	public Set<Spectacle> getSpectaclesSeller() {
-		return spectaclesSeller;
-	}
-
-	public void setSpectaclesSeller(Set<Spectacle> spectaclesSeller) {
-		this.spectaclesSeller = spectaclesSeller;
-	}
-
-	public Set<Spectacle> getSpectaclesPurchaser() {
-		return spectaclesPurchaser;
-	}
-
-	public void setSpectaclesPurchaser(Set<Spectacle> spectaclesPurchaser) {
-		this.spectaclesPurchaser = spectaclesPurchaser;
-	}
 
 	@Override
     public String toString() {

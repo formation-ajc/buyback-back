@@ -135,20 +135,6 @@ public class AdminController {
     public ResponseEntity<?> deleteUser(@PathVariable("id") Long id){
     	User user = userRepository.findById(id).get();
     	if(user != null) {
-    		for (Sport sport : user.getSportsSeller()) {
-    			 sport.setSeller(null);
-			}
-    		for (Sport sport : user.getSportsPurshaser()) {
-   			 sport.setPurchaser(null);
-			}
-    		
-    		for (Spectacle spectacle : user.getSpectaclesSeller()) {
-      			 spectacle.setSeller(null);
-    		}
-    		
-    		for (Spectacle spectacle : user.getSpectaclesPurchaser()) {
-      			 spectacle.setPurchaser(null);
-   			}
     		userRepository.deleteById(id);
     		return ResponseEntity.ok(new MessageResponse("User deleted successfully"));
     	}
